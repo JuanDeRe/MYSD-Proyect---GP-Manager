@@ -5,7 +5,7 @@ CREATE TABLE Torneos(
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
     cupo NUMBER(3) NOT NULL,
-    plataforma_principal,
+    plataforma_principal VARCHAR2(15) NOT NULL,
     organizador VARCHAR2(8) NOT NULL,
     juego VARCHAR2(20) NOT NULL
 );
@@ -14,7 +14,7 @@ CREATE TABLE Eventos(
     id VARCHAR2(20) NOT NULL,
     fecha DATE NOT NULL,
     clima VARCHAR2(20) NOT NULL,
-    hora_in_game,
+    hora_in_game VARCHAR2(5) NOT NULL,
     torneo VARCHAR2(20) NOT NULL,
     circuito VARCHAR2(40) NOT NULL
 );
@@ -26,12 +26,12 @@ CREATE TABLE Carreras(
 
 CREATE TABLE Clasificaciones(
     id VARCHAR2(20) NOT NULL,
-    duracion
+    duracion VARCHAR2(5) NOT NULL
 );
 
 CREATE TABLE Practicas (
     id VARCHAR2(20) NOT NULL,
-    duracion
+    duracion VARCHAR2(5) NOT NULL
 );
 
 CREATE TABLE Juegos (
@@ -65,7 +65,7 @@ CREATE TABLE Vehiculos(
     marca VARCHAR2(15) NOT NULL,
     referencia VARCHAR2(30) NOT NULL,
     año NUMBER(4) NOT NULL,
-    categoria,
+    categoria VARCHAR2(20),
     peso NUMBER(4),
     hp NUMBER(4)
 );
@@ -123,3 +123,18 @@ ADD CONSTRAINT chk_torneos_plataforma CHECK (plataforma_principal IN ('PC', 'Xbo
 ALTER TABLE Eventos
 ADD CONSTRAINT chk_eventos_clima CHECK (clima IN ('Despejado', 'Nublado', 'Lluvia ligera', 'Lluvia fuerte', 'Dinamico'))
 ADD CONSTRAINT chk_eventos_hora_in_game CHECK (REGEXP_LIKE(hora_in_game, '^([01][0-9]|2[0-3]):[0-5][0-9]$'));
+
+-- XTablas
+DROP TABLE Carreras CASCADE CONSTRAINTS;
+DROP TABLE Clasificaciones CASCADE CONSTRAINTS;
+DROP TABLE Practicas CASCADE CONSTRAINTS;
+DROP TABLE Eventos CASCADE CONSTRAINTS;
+DROP TABLE VehiculosPorTorneo CASCADE CONSTRAINTS;
+DROP TABLE VehiculosDeJuegos CASCADE CONSTRAINTS;
+DROP TABLE CircuitosDeJuegos CASCADE CONSTRAINTS;
+DROP TABLE Torneos CASCADE CONSTRAINTS;
+DROP TABLE Organizadores CASCADE CONSTRAINTS;
+DROP TABLE Juegos CASCADE CONSTRAINTS;
+DROP TABLE Circuitos CASCADE CONSTRAINTS;
+DROP TABLE Vehiculos CASCADE CONSTRAINTS;
+DROP TABLE Usuarios CASCADE CONSTRAINTS;
