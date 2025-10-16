@@ -118,6 +118,8 @@ ALTER TABLE Clasificaciones ADD CONSTRAINT fk_clasificaciones_eventos FOREIGN KE
 ALTER TABLE Practicas ADD CONSTRAINT fk_practicas_eventos FOREIGN KEY (id) REFERENCES Eventos(id);
 
 -- Atributos
+ALTER TABLE Torneos
 ADD CONSTRAINT chk_torneos_plataforma CHECK (plataforma_principal IN ('PC', 'Xbox', 'PlayStation', 'Nintendo', 'Multiplataforma'));
-ADD CONSTRAINT chk_eventos_clima CHECK (clima IN ('Despejado', 'Nublado', 'Lluvia ligera', 'Lluvia fuerte', 'Dinamico'));
+ALTER TABLE Eventos
+ADD CONSTRAINT chk_eventos_clima CHECK (clima IN ('Despejado', 'Nublado', 'Lluvia ligera', 'Lluvia fuerte', 'Dinamico'))
 ADD CONSTRAINT chk_eventos_hora_in_game CHECK (REGEXP_LIKE(hora_in_game, '^([01][0-9]|2[0-3]):[0-5][0-9]$'));
