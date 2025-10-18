@@ -43,7 +43,6 @@ CREATE TABLE Juegos (
     nombre VARCHAR2(20) NOT NULL
 );
 
-
 CREATE TABLE Circuitos(
     nombre VARCHAR2(40) NOT NULL,
     pais VARCHAR2(20) NOT NULL,
@@ -55,7 +54,6 @@ CREATE TABLE CircuitosDisponibles(
     circuito VARCHAR2(40) NOT NULL,
     clima VARCHAR2(20) NOT NULL
 );
-
 
 CREATE TABLE VehiculosDeJuegos(
     juego VARCHAR2(20) NOT NULL,
@@ -90,41 +88,6 @@ CREATE TABLE Usuarios(
     pais VARCHAR2(20) NOT NULL,
     fecha_registro DATE NOT NULL
 );
-
--- Llaves primarias
-ALTER TABLE Torneos ADD CONSTRAINT pk_torneos PRIMARY KEY (id);
-ALTER TABLE Eventos ADD CONSTRAINT pk_eventos PRIMARY KEY (id, torneo); 
-ALTER TABLE Carreras ADD CONSTRAINT pk_carreras PRIMARY KEY (id, torneo);
-ALTER TABLE Clasificaciones ADD CONSTRAINT pk_clasificaciones PRIMARY KEY (id, torneo);
-ALTER TABLE Practicas ADD CONSTRAINT pk_practicas PRIMARY KEY (id, torneo);
-ALTER TABLE Juegos ADD CONSTRAINT pk_juegos PRIMARY KEY (nombre);
-ALTER TABLE Circuitos ADD CONSTRAINT pk_circuitos PRIMARY KEY (nombre);
-ALTER TABLE Vehiculos ADD CONSTRAINT pk_vehiculos PRIMARY KEY (marca, referencia);
-ALTER TABLE Organizadores ADD CONSTRAINT pk_organizadores PRIMARY KEY (id);
-ALTER TABLE Usuarios ADD CONSTRAINT pk_usuarios PRIMARY KEY (id);
-ALTER TABLE CircuitosDisponibles ADD CONSTRAINT pk_circuitosdisponibles PRIMARY KEY (juego, circuito, clima);
-ALTER TABLE VehiculosDeJuegos ADD CONSTRAINT pk_vehiculosdejuegos PRIMARY KEY (juego, marca_vehiculo, referencia_vehiculo);
-ALTER TABLE VehiculosPorTorneo ADD CONSTRAINT pk_vehiculosportorneo PRIMARY KEY (torneo, marca_vehiculo, referencia_vehiculo);
-
--- Llaves unicas
-ALTER TABLE Usuarios ADD CONSTRAINT uk_usuarios_nombre_usuario UNIQUE (nombre_usuario);
-ALTER TABLE Usuarios ADD CONSTRAINT uk_usuarios_correo UNIQUE (correo);
-
--- Llaves foraneas
-ALTER TABLE Organizadores ADD CONSTRAINT fk_organizadores_usuarios FOREIGN KEY (id) REFERENCES Usuarios(id);
-ALTER TABLE Torneos ADD CONSTRAINT fk_torneos_organizadores FOREIGN KEY (organizador) REFERENCES Organizadores(id);
-ALTER TABLE Torneos ADD CONSTRAINT fk_torneos_juegos FOREIGN KEY (juego) REFERENCES Juegos(nombre);
-ALTER TABLE Eventos ADD CONSTRAINT fk_eventos_torneos FOREIGN KEY (torneo) REFERENCES Torneos(id);
-ALTER TABLE Eventos ADD CONSTRAINT fk_eventos_circuitos FOREIGN KEY (circuito) REFERENCES Circuitos(nombre);
-ALTER TABLE CircuitosDisponibles ADD CONSTRAINT fk_circuitosdisponibles_juegos FOREIGN KEY (juego) REFERENCES Juegos(nombre);
-ALTER TABLE CircuitosDisponibles ADD CONSTRAINT fk_circuitosdisponibles_circuitos FOREIGN KEY (circuito) REFERENCES Circuitos(nombre);
-ALTER TABLE VehiculosDeJuegos ADD CONSTRAINT fk_vehiculosdejuegos_juegos FOREIGN KEY (juego) REFERENCES Juegos(nombre);
-ALTER TABLE VehiculosDeJuegos ADD CONSTRAINT fk_vehiculosdejuegos_vehiculos FOREIGN KEY (marca_vehiculo, referencia_vehiculo) REFERENCES Vehiculos(marca, referencia);
-ALTER TABLE VehiculosPorTorneo ADD CONSTRAINT fk_vehiculosportorneo_torneos FOREIGN KEY (torneo) REFERENCES Torneos(id);
-ALTER TABLE VehiculosPorTorneo ADD CONSTRAINT fk_vehiculosportorneo_vehiculos FOREIGN KEY (marca_vehiculo, referencia_vehiculo) REFERENCES Vehiculos(marca, referencia);
-ALTER TABLE Carreras ADD CONSTRAINT fk_carreras_eventos FOREIGN KEY (id, torneo) REFERENCES Eventos(id, torneo);
-ALTER TABLE Clasificaciones ADD CONSTRAINT fk_clasificaciones_eventos FOREIGN KEY (id, torneo) REFERENCES Eventos(id, torneo);
-ALTER TABLE Practicas ADD CONSTRAINT fk_practicas_eventos FOREIGN KEY (id, torneo) REFERENCES Eventos(id, torneo);
 
 -- Atributos
 ALTER TABLE Torneos
@@ -168,6 +131,42 @@ ADD CONSTRAINT chk_vehiculos_año CHECK (año >= 0)
 ADD CONSTRAINT chk_vehiculos_categoria CHECK (categoria IN ('Calle', 'Deportivo', 'Rally', 'Nascar', 'Clasico', 'Monoplaza', 'Prototipo', 'Gran Turismo', 'Otro'))
 ADD CONSTRAINT chk_vehiculos_peso CHECK ((peso > 0 AND peso <= 9999.99) OR peso IS NULL)
 ADD CONSTRAINT chk_vehiculos_hp CHECK ((hp > 0 AND hp <= 9999) OR hp IS NULL);
+
+-- Llaves primarias
+ALTER TABLE Torneos ADD CONSTRAINT pk_torneos PRIMARY KEY (id);
+ALTER TABLE Eventos ADD CONSTRAINT pk_eventos PRIMARY KEY (id, torneo); 
+ALTER TABLE Carreras ADD CONSTRAINT pk_carreras PRIMARY KEY (id, torneo);
+ALTER TABLE Clasificaciones ADD CONSTRAINT pk_clasificaciones PRIMARY KEY (id, torneo);
+ALTER TABLE Practicas ADD CONSTRAINT pk_practicas PRIMARY KEY (id, torneo);
+ALTER TABLE Juegos ADD CONSTRAINT pk_juegos PRIMARY KEY (nombre);
+ALTER TABLE Circuitos ADD CONSTRAINT pk_circuitos PRIMARY KEY (nombre);
+ALTER TABLE Vehiculos ADD CONSTRAINT pk_vehiculos PRIMARY KEY (marca, referencia);
+ALTER TABLE Organizadores ADD CONSTRAINT pk_organizadores PRIMARY KEY (id);
+ALTER TABLE Usuarios ADD CONSTRAINT pk_usuarios PRIMARY KEY (id);
+ALTER TABLE CircuitosDisponibles ADD CONSTRAINT pk_circuitosdisponibles PRIMARY KEY (juego, circuito, clima);
+ALTER TABLE VehiculosDeJuegos ADD CONSTRAINT pk_vehiculosdejuegos PRIMARY KEY (juego, marca_vehiculo, referencia_vehiculo);
+ALTER TABLE VehiculosPorTorneo ADD CONSTRAINT pk_vehiculosportorneo PRIMARY KEY (torneo, marca_vehiculo, referencia_vehiculo);
+
+-- Llaves unicas
+ALTER TABLE Usuarios ADD CONSTRAINT uk_usuarios_nombre_usuario UNIQUE (nombre_usuario);
+ALTER TABLE Usuarios ADD CONSTRAINT uk_usuarios_correo UNIQUE (correo);
+
+-- Llaves foraneas
+ALTER TABLE Organizadores ADD CONSTRAINT fk_organizadores_usuarios FOREIGN KEY (id) REFERENCES Usuarios(id);
+ALTER TABLE Torneos ADD CONSTRAINT fk_torneos_organizadores FOREIGN KEY (organizador) REFERENCES Organizadores(id);
+ALTER TABLE Torneos ADD CONSTRAINT fk_torneos_juegos FOREIGN KEY (juego) REFERENCES Juegos(nombre);
+ALTER TABLE Eventos ADD CONSTRAINT fk_eventos_torneos FOREIGN KEY (torneo) REFERENCES Torneos(id);
+ALTER TABLE Eventos ADD CONSTRAINT fk_eventos_circuitos FOREIGN KEY (circuito) REFERENCES Circuitos(nombre);
+ALTER TABLE CircuitosDisponibles ADD CONSTRAINT fk_circuitosdisponibles_juegos FOREIGN KEY (juego) REFERENCES Juegos(nombre);
+ALTER TABLE CircuitosDisponibles ADD CONSTRAINT fk_circuitosdisponibles_circuitos FOREIGN KEY (circuito) REFERENCES Circuitos(nombre);
+ALTER TABLE VehiculosDeJuegos ADD CONSTRAINT fk_vehiculosdejuegos_juegos FOREIGN KEY (juego) REFERENCES Juegos(nombre);
+ALTER TABLE VehiculosDeJuegos ADD CONSTRAINT fk_vehiculosdejuegos_vehiculos FOREIGN KEY (marca_vehiculo, referencia_vehiculo) REFERENCES Vehiculos(marca, referencia);
+ALTER TABLE VehiculosPorTorneo ADD CONSTRAINT fk_vehiculosportorneo_torneos FOREIGN KEY (torneo) REFERENCES Torneos(id);
+ALTER TABLE VehiculosPorTorneo ADD CONSTRAINT fk_vehiculosportorneo_vehiculos FOREIGN KEY (marca_vehiculo, referencia_vehiculo) REFERENCES Vehiculos(marca, referencia);
+ALTER TABLE Carreras ADD CONSTRAINT fk_carreras_eventos FOREIGN KEY (id, torneo) REFERENCES Eventos(id, torneo);
+ALTER TABLE Clasificaciones ADD CONSTRAINT fk_clasificaciones_eventos FOREIGN KEY (id, torneo) REFERENCES Eventos(id, torneo);
+ALTER TABLE Practicas ADD CONSTRAINT fk_practicas_eventos FOREIGN KEY (id, torneo) REFERENCES Eventos(id, torneo);
+
 -- PoblarOk
 INSERT INTO Juegos (nombre) VALUES ('Gran Turismo 7');
 INSERT INTO Juegos (nombre) VALUES ('F1 2025');
