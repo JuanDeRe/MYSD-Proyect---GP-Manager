@@ -30,3 +30,11 @@ WHERE cd.juego = 'F1 2025';
 SELECT v.* FROM Vehiculos v
 JOIN VehiculosDeJuegos vd ON v.marca = vd.marca_vehiculo AND v.referencia = vd.referencia_vehiculo
 WHERE vd.juego = 'Assetto Corsa';
+
+-- 10. Listar los circuitos de un torneo
+SELECT c.* FROM Circuitos c
+JOIN Eventos e ON c.nombre = e.circuito
+WHERE e.torneo = 'SPE00000000000000000';
+
+--11. Listar la plataforma principal del torneo
+SELECT t.nombre, t.plataforma_principal FROM Torneos t WHERE id = 'SPE00000000000000000';

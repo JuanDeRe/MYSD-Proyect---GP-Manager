@@ -1,4 +1,4 @@
--- Tablas
+    -- Tablas
 CREATE TABLE Torneos(
     id VARCHAR2(20) NOT NULL,
     nombre VARCHAR2(40) NOT NULL,
@@ -71,20 +71,20 @@ CREATE TABLE Vehiculos(
     marca VARCHAR2(15) NOT NULL,
     referencia VARCHAR2(30) NOT NULL,
     año NUMBER(4) NOT NULL,
-    categoria VARCHAR2(20),
+    categoria VARCHAR2(20) NOT NULL,
     peso NUMBER(6,2),
     hp NUMBER(4)
 );
 
 CREATE TABLE Organizadores(
     id VARCHAR2(10) NOT NULL,
-    total_torneos_creados NUMBER(6)
+    total_torneos_creados NUMBER(6) NOT NULL
 );
 
 CREATE TABLE Usuarios(
     id VARCHAR2(10) NOT NULL,
     nombre_usuario VARCHAR2(15) NOT NULL,
-    correo VARCHAR2(80),
+    correo VARCHAR2(80) NOT NULL,
     pais VARCHAR2(20) NOT NULL,
     fecha_registro DATE NOT NULL
 );
@@ -308,6 +308,16 @@ WHERE cd.juego = 'F1 2025';
 SELECT v.* FROM Vehiculos v
 JOIN VehiculosDeJuegos vd ON v.marca = vd.marca_vehiculo AND v.referencia = vd.referencia_vehiculo
 WHERE vd.juego = 'Assetto Corsa';
+
+-- 10. Conocer los circuitos de un torneo
+SELECT c.* FROM Circuitos c
+JOIN Eventos e ON c.nombre = e.circuito
+WHERE e.torneo = 'SPE00000000000000000';
+
+--11. Listar la plataforma principal del torneo
+SELECT t.nombre, t.plataforma_principal FROM Torneos t WHERE id = 'SPE00000000000000000';
+
+
 
 -- XPoblar
 DELETE FROM Carreras;
