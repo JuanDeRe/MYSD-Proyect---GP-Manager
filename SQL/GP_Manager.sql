@@ -18,6 +18,12 @@ START Estructura_y_restricciones_declarativas/Consultas.sql
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/Tuplas.sql
 -- TuplasOK
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/TuplasOk.sql
+-- TuplasNoOK
+START Restricciones_Declarativas_Procedimentales_y_Automatizacion/TuplasNoOK.sql
+-- Acciones
+START Restricciones_Declarativas_Procedimentales_y_Automatizacion/Acciones.sql
+-- AccionesOK
+START Restricciones_Declarativas_Procedimentales_y_Automatizacion/AccionesOK.sql
 -- XPoblar
 START Estructura_y_restricciones_declarativas/XPoblar.sql
 -- XTablas
