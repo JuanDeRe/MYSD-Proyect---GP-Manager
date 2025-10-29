@@ -4,7 +4,7 @@ ALTER TABLE Torneos
 ADD CONSTRAINT chk_torneos_id CHECK (LENGTH(id) = 20)
 ADD CONSTRAINT chk_torneos_plataforma CHECK (plataforma_principal IN ('PC', 'Xbox', 'PlayStation', 'Nintendo', 'Multiplataforma'))
 ADD CONSTRAINT chk_torneos_cupo CHECK (cupo > 1 AND cupo <= 999)
-ADD CONSTRAINT chk_torneos_estado CHECK (estado IN ('Programado', 'En curso', 'Finalizado'));
+ADD CONSTRAINT chk_torneos_estado CHECK (estado IN ('Programado', 'En curso', 'Finalizado', 'Cancelado'));
 
 ALTER TABLE Eventos
 ADD CONSTRAINT chk_eventos_id CHECK (id >= 0 AND id <= 9999)
