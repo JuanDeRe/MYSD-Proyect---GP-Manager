@@ -11,7 +11,7 @@ ADD CONSTRAINT chk_eventos_id CHECK (id >= 0 AND id <= 9999)
 ADD CONSTRAINT chk_eventos_fecha CHECK (TO_CHAR(fecha, 'HH24:MI') <> '00:00')
 ADD CONSTRAINT chk_eventos_clima CHECK (clima IN ('Despejado', 'Nublado', 'Lluvia ligera', 'Lluvia fuerte', 'Dinamico'))
 ADD CONSTRAINT chk_eventos_hora_in_game CHECK (REGEXP_LIKE(hora_in_game, '^([01][0-9]|2[0-3]):[0-5][0-9]$') OR hora_in_game IS NULL)
-ADD CONSTRAINT chk_eventos_estado CHECK (estado IN ('Programado', 'En curso', 'Finalizado'));
+ADD CONSTRAINT chk_eventos_estado CHECK (estado IN ('Programado', 'En curso', 'Finalizado', 'Cancelado'));
 
 ALTER TABLE Carreras
 ADD CONSTRAINT chk_carreras_numero_vueltas CHECK (numero_vueltas > 0 AND numero_vueltas <= 999);
