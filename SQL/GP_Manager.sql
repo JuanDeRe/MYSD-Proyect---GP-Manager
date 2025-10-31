@@ -24,6 +24,14 @@ START Restricciones_Declarativas_Procedimentales_y_Automatizacion/TuplasNoOK.sql
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/Acciones.sql
 -- AccionesOK
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/AccionesOK.sql
+-- Disparadores
+START Restricciones_Declarativas_Procedimentales_y_Automatizacion/Disparadores.sql
+-- DisparadoresOK
+START Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresOK.sql
+-- DisparadoresNoOK
+START Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresNoOK.sql
+-- XDisparadores
+START Restricciones_Declarativas_Procedimentales_y_Automatizacion/XDisparadores.sql
 -- XPoblar
 START Estructura_y_restricciones_declarativas/XPoblar.sql
 -- XTablas

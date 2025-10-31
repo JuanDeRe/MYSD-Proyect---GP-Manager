@@ -11,10 +11,10 @@ INSERT INTO Usuarios (id, nombre_usuario, correo, pais, fecha_registro) VALUES (
 INSERT INTO Organizadores (id, total_torneos_creados) VALUES ('AAA0000020', 0);
 
 -- El organizador no existe.
-INSERT INTO Torneos (id, nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, estado, organizador, juego) VALUES ('VALIDTOURNEY001', 'Valid Tournament', TO_DATE('2023-06-05', 'YYYY-MM-DD'), TO_DATE('2023-06-15', 'YYYY-MM-DD'), 10, 'PC', 'Programado', 'AAA0000020', 'F1 2025');
+INSERT INTO Torneos (id, nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, estado, numero_eventos, organizador, juego) VALUES ('VALIDTOURNEY001', 'Valid Tournament', TO_DATE('2023-06-05', 'YYYY-MM-DD'), TO_DATE('2023-06-15', 'YYYY-MM-DD'), 10, 'PC', 'Programado',0, 'AAA0000020', 'F1 2025');
 
 -- El torneo tiene un cupo inválido.
-INSERT INTO Torneos (id, nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, estado, organizador, juego) VALUES ('INVALIDTOURNEY', 'Bad Tournament', TO_DATE('2023-06-05', 'YYYY-MM-DD'), TO_DATE('2023-06-15', 'YYYY-MM-DD'), -1, 'PC', 'Programado', 'RAC0000000', 'F1 2025');
+INSERT INTO Torneos (id, nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, estado, numero_eventos, organizador, juego) VALUES ('INVALIDTOURNEY', 'Bad Tournament', TO_DATE('2023-06-05', 'YYYY-MM-DD'), TO_DATE('2023-06-15', 'YYYY-MM-DD'), -1, 'PC', 'Programado',0, 'RAC0000000', 'F1 2025');
 
 -- La fecha del evento es inválida.
 INSERT INTO Eventos (id, fecha, clima, hora_in_game, estado, torneo, circuito) VALUES (99, TO_DATE('2023-06-05 00:00', 'YYYY-MM-DD HH24:MI'), 'Despejado', '14:00', 'Programado', 'RAC00000000000000000', 'Monza');

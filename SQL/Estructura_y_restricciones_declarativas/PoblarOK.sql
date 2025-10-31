@@ -28,8 +28,8 @@ INSERT INTO Usuarios (id, nombre_usuario, correo, pais, fecha_registro) VALUES (
 INSERT INTO Organizadores (id, total_torneos_creados) VALUES ('RAC0000000', 0);
 INSERT INTO Organizadores (id, total_torneos_creados) VALUES ('SPE0000000', 0);
 
-INSERT INTO Torneos (id, nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, estado, organizador, juego) VALUES ('RAC00000000000000000', 'Eurocup', TO_DATE('2023-06-05', 'YYYY-MM-DD'), TO_DATE('2023-06-07', 'YYYY-MM-DD'), 20, 'PC', 'Programado', 'RAC0000000', 'F1 2025');
-INSERT INTO Torneos (id, nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, estado, organizador, juego) VALUES ('SPE00000000000000000', 'GT Championship', TO_DATE('2023-07-05', 'YYYY-MM-DD'), TO_DATE('2023-07-06', 'YYYY-MM-DD'), 15, 'PlayStation', 'Programado', 'SPE0000000', 'Gran Turismo 7');
+INSERT INTO Torneos (id, nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, estado, numero_eventos, organizador, juego) VALUES ('RAC00000000000000000', 'Eurocup', TO_DATE('2023-06-05', 'YYYY-MM-DD'), TO_DATE('2023-06-07', 'YYYY-MM-DD'), 20, 'PC', 'Programado',0, 'RAC0000000', 'F1 2025');
+INSERT INTO Torneos (id, nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, estado, numero_eventos, organizador, juego) VALUES ('SPE00000000000000000', 'GT Championship', TO_DATE('2023-07-05', 'YYYY-MM-DD'), TO_DATE('2023-07-06', 'YYYY-MM-DD'), 15, 'PlayStation', 'Programado',0, 'SPE0000000', 'Gran Turismo 7');
 
 INSERT INTO VehiculosPorTorneo (torneo, marca_vehiculo, referencia_vehiculo) VALUES ('RAC00000000000000000', 'Red Bull', 'RB21');
 INSERT INTO VehiculosPorTorneo (torneo, marca_vehiculo, referencia_vehiculo) VALUES ('SPE00000000000000000', 'Ferrari', '488 GTB');

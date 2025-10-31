@@ -1,0 +1,15 @@
+DROP TRIGGER trg_Carrera_estado_programado;
+DROP TRIGGER trg_clasificaciones_estado_programado;
+DROP TRIGGER trg_eventos_actualizar;
+DROP TRIGGER trg_eventos_actualizar_torneo;
+DROP TRIGGER trg_eventos_creacion;
+DROP TRIGGER trg_Eventos_eliminar;
+DROP TRIGGER trg_practicas_estado_programado;
+DROP TRIGGER trg_torneos_creacion;
+DROP TRIGGER trg_Torneos_eliminar;
+DROP TRIGGER trg_torneos_actualizar_estado;
+DROP TRIGGER trg_torneos_actualizar_estado_cancelado;
+DROP TRIGGER trg_torneos_actualizar_organizador;
+DROP TRIGGER trg_usuarios_actualizar;
+DROP TRIGGER trg_usuarios_creacion;
+DROP SEQUENCE seq_torneo_id;

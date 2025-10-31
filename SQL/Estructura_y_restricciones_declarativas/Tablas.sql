@@ -7,6 +7,7 @@ CREATE TABLE Torneos (
     cupo NUMBER(3) NOT NULL,
     plataforma_principal VARCHAR2(15) NOT NULL,
     estado VARCHAR2(15) NOT NULL,
+    numero_eventos NUMBER(4) NOT NULL,
     organizador VARCHAR2(10) NOT NULL,
     juego VARCHAR2(20) NOT NULL
 );
