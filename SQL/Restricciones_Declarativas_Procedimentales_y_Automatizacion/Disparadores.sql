@@ -27,7 +27,7 @@ BEGIN
 END;
 /
 
--- Cada organizador comienza con total torneos creados = 0
+-- Cada organizador comienza con total torneos creados = 0  
 CREATE OR REPLACE TRIGGER trg_organizadores_creacion
 BEFORE INSERT ON Organizadores
 FOR EACH ROW
@@ -60,7 +60,7 @@ END;
 /
 
 
--- Cuando se cactualizan torneos creados del organizador
+-- Cuando se actualizan torneos creados del organizador
 CREATE OR REPLACE TRIGGER trg_torneos_actualizar_organizador
 AFTER INSERT ON Torneos
 FOR EACH ROW
@@ -90,6 +90,7 @@ BEGIN
     IF 
     (:NEW.estado = 'Finalizado' AND (:OLD.estado != 'En curso')) OR
     (:NEW.estado = 'En curso' AND (:OLD.estado NOT IN ('Programado','En curso'))) OR
+    (:NEW.estado = 'Programado' AND (:OLD.estado != 'Programado')) OR
     (:NEW.estado = 'Cancelado' AND (:OLD.estado != 'Programado')) THEN
         RAISE_APPLICATION_ERROR(-20003, 'Solo se puede pasar de estado Programado a En curso, de En curso a Finalizado y de Programado a Cancelado');
     END IF;
