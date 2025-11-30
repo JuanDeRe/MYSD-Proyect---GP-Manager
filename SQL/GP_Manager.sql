@@ -1,3 +1,5 @@
+-- Vaciar Papelera
+PURGE RECYCLEBIN;
 -- Tablas
 START Estructura_y_restricciones_declarativas/Tablas.sql
 -- Atributos
@@ -36,3 +38,5 @@ START Restricciones_Declarativas_Procedimentales_y_Automatizacion/XDisparadores.
 START Estructura_y_restricciones_declarativas/XPoblar.sql
 -- XTablas
 START Estructura_y_restricciones_declarativas/XTablas.sql
+-- Vaciar Papelera
+PURGE RECYCLEBIN;

@@ -1,5 +1,7 @@
 -- GP Manager Automatizado
 -- GP_Manager.sql
+-- Vaciar Papelera
+PURGE RECYCLEBIN;
 -- Tablas
 START Estructura_y_restricciones_declarativas/Tablas.sql
 -- Atributos
@@ -33,7 +35,7 @@ START Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresOK
 -- DisparadoresNoOK
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresNoOK.sql
 -- Poblar_Automatizado
-START Restricciones_Declarativas_Procedimentales_y_Automatizacion/Poblar_Automatizado.sql
+START Restricciones_Declarativas_Procedimentales_y_Automatizacion/InsertsMasivos/Poblar_Automatizado.sql
 -- Consultas Masivas
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/Consultas_Masivas.sql
 -- XDisparadores
@@ -42,3 +44,5 @@ START Restricciones_Declarativas_Procedimentales_y_Automatizacion/XDisparadores.
 START Estructura_y_restricciones_declarativas/XPoblar.sql
 -- XTablas
 START Estructura_y_restricciones_declarativas/XTablas.sql
+-- Vaciar Papelera
+PURGE RECYCLEBIN;
