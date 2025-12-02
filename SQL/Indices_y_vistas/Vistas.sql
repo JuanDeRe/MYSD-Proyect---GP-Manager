@@ -186,25 +186,6 @@ GROUP BY t.id, t.nombre, t.estado, t.fecha_inicio, t.fecha_fin,
 
 -- VISTAS ESTADÍSTICAS GENERALES
 
--- Vista: Distribución de eventos por tipo
-CREATE OR REPLACE VIEW v_distribucion_tipos_evento AS
-SELECT 
-    'Carrera' AS tipo_evento,
-    COUNT(*) AS cantidad,
-    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Eventos), 2) AS porcentaje
-FROM Carreras
-UNION ALL
-SELECT 
-    'Clasificacion' AS tipo_evento,
-    COUNT(*) AS cantidad,
-    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Eventos), 2) AS porcentaje
-FROM Clasificaciones
-UNION ALL
-SELECT 
-    'Practica' AS tipo_evento,
-    COUNT(*) AS cantidad,
-    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Eventos), 2) AS porcentaje
-FROM Practicas;
 
 -- Vista: Estadísticas de clima en eventos
 CREATE OR REPLACE VIEW v_estadisticas_clima AS

@@ -32,6 +32,14 @@ START Restricciones_Declarativas_Procedimentales_y_Automatizacion/Disparadores.s
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresOK.sql
 -- DisparadoresNoOK
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresNoOK.sql
+-- Indices
+START Indices_y_vistas/Indices.sql
+-- Vistas
+START Indices_y_vistas/Vistas.sql
+-- IndicesVistasOK
+START Indices_y_vistas/IndicesVistasOK.sql
+-- XIndicesVistas
+START Indices_y_vistas/XIndicesVistas.sql
 -- XDisparadores
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/XDisparadores.sql
 -- XPoblar

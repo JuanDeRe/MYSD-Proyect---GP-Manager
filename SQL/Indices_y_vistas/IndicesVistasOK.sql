@@ -181,11 +181,6 @@ END;
 
 -- 4. CONSULTAS ESTADÍSTICAS GENERALES
 
--- 4.1 - Distribución de tipos de eventos
--- Usa: v_distribucion_tipos_evento
-SELECT tipo_evento, cantidad, porcentaje 
-FROM v_distribucion_tipos_evento
-ORDER BY cantidad DESC;
 
 -- 4.2 - Estadísticas de clima
 -- Usa: v_estadisticas_clima + idx_eventos_circuito
