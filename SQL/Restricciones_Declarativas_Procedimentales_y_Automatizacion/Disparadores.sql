@@ -4,11 +4,15 @@ CREATE OR REPLACE TRIGGER trg_usuarios_creacion
 BEFORE INSERT ON Usuarios
 FOR EACH ROW
 DECLARE
+    -- numero ultimo usuario
     n_ultimo_usuario VARCHAR(200);
+    -- parte string del usuario
     parte_usuario_id VARCHAR(200);
 BEGIN
     :NEW.fecha_registro := SYSDATE;
+    -- extrae la parte del usuario del nombre de usuario
     parte_usuario_id := UPPER(SUBSTR(:NEW.nombre_usuario, 0, 3));
+    -- obtiene la cantidad de usuarios 
     SELECT LPAD(TO_CHAR(NVL(COUNT(id),0)),7,0) INTO n_ultimo_usuario FROM Usuarios WHERE id LIKE (parte_usuario_id || '%');
     :NEW.id := parte_usuario_id || n_ultimo_usuario;
 END;
@@ -77,6 +81,7 @@ FOR EACH ROW
 DECLARE
     v_eventos_no_finalizados NUMBER;
 BEGIN
+    -- columnas que no se pueden modificar
     IF 
     :NEW.id != :OLD.id OR
     :NEW.fecha_inicio != :OLD.fecha_inicio OR
@@ -87,6 +92,7 @@ BEGIN
     THEN
         RAISE_APPLICATION_ERROR(-20002, 'Solo se puede actualizar el cupo, nombre y estado del torneo');
     END IF;
+    -- verificacion consistencia de cambio de estados
     IF 
     (:NEW.estado = 'Finalizado' AND (:OLD.estado != 'En curso')) OR
     (:NEW.estado = 'En curso' AND (:OLD.estado NOT IN ('Programado','En curso'))) OR
@@ -95,6 +101,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20003, 'Solo se puede pasar de estado Programado a En curso, de En curso a Finalizado y de Programado a Cancelado');
     END IF;
     IF (:NEW.estado = 'Finalizado') THEN
+    -- cuenta los eventos finalizados del torneo
         SELECT COUNT(id) INTO v_eventos_no_finalizados FROM Eventos
         WHERE torneo = :NEW.id AND estado != 'Finalizado';
         IF (v_eventos_no_finalizados > 0) THEN
@@ -185,64 +192,86 @@ CREATE OR REPLACE TRIGGER trg_eventos_actualizar
 BEFORE UPDATE ON Eventos
 FOR EACH ROW
 DECLARE
-    v_fecha_inicio  Torneos.fecha_inicio%TYPE;
-    v_fecha_fin     Torneos.fecha_fin%TYPE;
-    v_juego         Torneos.juego%TYPE;
-    v_circuito_ok   NUMBER;
-    v_clima_ok      NUMBER;
+    v_torneo_info   Torneos%ROWTYPE;
+    v_valida        NUMBER;
 BEGIN
-    IF :NEW.id != :OLD.id OR
-    :NEW.torneo != :OLD.torneo THEN
+    IF UPDATING('id') OR UPDATING('torneo') THEN
         RAISE_APPLICATION_ERROR(-20007,'No se pueden modificar el id ni el torneo de un evento');
     END IF;
-    IF :OLD.estado != :NEW.estado THEN
-        IF NOT (
-                (:OLD.estado = 'Programado' AND :NEW.estado IN ('En curso', 'Cancelado', 'Programado'))
-                OR (:OLD.estado = 'En curso' AND :NEW.estado IN ('Finalizado', 'En curso'))
-                OR (:OLD.estado = 'Finalizado' AND :NEW.estado = 'Finalizado')
-            ) THEN
-                RAISE_APPLICATION_ERROR(-20008, 'Solo se puede pasar de estado Programado a En curso, de En curso a Finalizado y de Programado a Cancelado');
-        END IF;
-    END IF;
-    IF :OLD.estado != 'Programado' THEN
-        IF (:NEW.fecha   != :OLD.fecha
-        OR  :NEW.circuito != :OLD.circuito
-        OR  :NEW.clima    != :OLD.clima
-        OR  :NEW.torneo   != :OLD.torneo
-        OR  :NEW.id       != :OLD.id
-        OR  :NEW.hora_in_game != :OLD.hora_in_game
-        ) THEN
-            RAISE_APPLICATION_ERROR(-20010, 'No se pueden modificar torneos que no esten en estado programado');
-        END IF;
-    END IF;
-    SELECT fecha_inicio, fecha_fin, juego
-    INTO v_fecha_inicio, v_fecha_fin, v_juego
-    FROM Torneos
-    WHERE id = :NEW.torneo;
-    IF :NEW.fecha < v_fecha_inicio OR :NEW.fecha > v_fecha_fin THEN
-        RAISE_APPLICATION_ERROR(-20009, 
-            'La fecha del evento debe estar dentro del calendario del torneo');
-    END IF;
-    SELECT COUNT(*) 
-    INTO v_circuito_ok
-    FROM CircuitosDisponibles
-    WHERE circuito = :NEW.circuito
-      AND juego = v_juego;
 
-    IF v_circuito_ok = 0 THEN
-        RAISE_APPLICATION_ERROR(-20011, 
-            'Circuito no disponible en el juego del torneo');
+    --Validar transiciones de estado
+    IF :OLD.estado != :NEW.estado THEN
+        CASE :OLD.estado
+            WHEN 'Programado' THEN
+                IF :NEW.estado NOT IN ('En curso', 'Cancelado') THEN
+                    RAISE_APPLICATION_ERROR(-20008, 
+                        'De Programado solo se permite cambiar a En curso o Cancelado');
+                END IF;
+            WHEN 'En curso' THEN
+                IF :NEW.estado != 'Finalizado' THEN
+                    RAISE_APPLICATION_ERROR(-20008, 
+                        'De En curso solo se permite cambiar a Finalizado');
+                END IF;
+            WHEN 'Finalizado' THEN
+                IF :NEW.estado != 'Finalizado' THEN
+                    RAISE_APPLICATION_ERROR(-20008, 
+                        'No se puede modificar el estado de un evento Finalizado');
+                END IF;
+            ELSE
+                RAISE_APPLICATION_ERROR(-20008, 'Estado no válido para transición');
+        END CASE;
     END IF;
-    SELECT COUNT(*)
-    INTO v_clima_ok
-    FROM CircuitosDisponibles
-    WHERE circuito = :NEW.circuito
-      AND juego = v_juego
-      AND clima = :NEW.clima;
-    IF v_clima_ok = 0 THEN
-        RAISE_APPLICATION_ERROR(-20017, 
-            'Condiciones climáticas del circuito no disponibles para ese juego');
-    END IF; 
+
+    -- Si no está en Programado, solo permitir cambio de estado
+    IF :OLD.estado != 'Programado' AND (
+        :NEW.fecha != :OLD.fecha OR
+        :NEW.circuito != :OLD.circuito OR
+        :NEW.clima != :OLD.clima OR
+        :NEW.hora_in_game != :OLD.hora_in_game
+    ) THEN
+        RAISE_APPLICATION_ERROR(-20010, 
+            'Solo eventos en estado Programado pueden modificar sus datos');
+    END IF;
+
+    --Validaciones solo si está en estado Programado
+    IF :OLD.estado = 'Programado' THEN
+        -- Obtener datos del torneo
+        SELECT fecha_inicio, fecha_fin, juego
+        INTO v_torneo_info.fecha_inicio, v_torneo_info.fecha_fin, v_torneo_info.juego
+        FROM Torneos
+        WHERE id = :NEW.torneo;
+
+        -- Validar fecha dentro del calendario
+        IF :NEW.fecha NOT BETWEEN v_torneo_info.fecha_inicio 
+                             AND v_torneo_info.fecha_fin THEN
+            RAISE_APPLICATION_ERROR(-20009,
+                'La fecha del evento debe estar dentro del calendario del torneo');
+        END IF;
+
+        -- Validar circuito y clima en una sola consulta
+        SELECT COUNT(*)
+        INTO v_valida
+        FROM CircuitosDisponibles cd
+        WHERE cd.circuito = :NEW.circuito
+          AND cd.juego = v_torneo_info.juego
+          AND cd.clima = :NEW.clima;
+
+        IF v_valida = 0 THEN
+            SELECT COUNT(*)
+            INTO v_valida
+            FROM CircuitosDisponibles cd
+            WHERE cd.circuito = :NEW.circuito
+              AND cd.juego = v_torneo_info.juego;
+
+            IF v_valida = 0 THEN
+                RAISE_APPLICATION_ERROR(-20011,
+                    'Circuito no disponible en el juego del torneo');
+            ELSE
+                RAISE_APPLICATION_ERROR(-20017,
+                    'Condiciones climáticas no disponibles para este circuito');
+            END IF;
+        END IF;
+    END IF;
 END;
 /
 --Si por lo menos un evento esta en curso, el torneo pasa a estar en curso.
