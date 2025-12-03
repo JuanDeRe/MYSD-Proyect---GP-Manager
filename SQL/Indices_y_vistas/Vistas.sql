@@ -111,20 +111,6 @@ JOIN Juegos j ON cd.juego = j.nombre
 JOIN Circuitos c ON cd.circuito = c.nombre
 ORDER BY j.nombre, c.nombre, cd.clima;
 
--- Vista: Plataforma principal de torneos
-CREATE OR REPLACE VIEW v_torneos_plataforma AS
-SELECT 
-    t.id AS torneo_id,
-    t.nombre AS torneo_nombre,
-    t.plataforma_principal,
-    t.juego,
-    t.estado,
-    t.fecha_inicio,
-    t.cupo
-FROM Torneos t
-WHERE t.estado IN ('Programado', 'En curso');
-
-
 
 -- VISTAS PARA ORGANIZADOR
 
@@ -187,18 +173,6 @@ GROUP BY t.id, t.nombre, t.estado, t.fecha_inicio, t.fecha_fin,
 -- VISTAS ESTADÍSTICAS GENERALES
 
 
--- Vista: Estadísticas de clima en eventos
-CREATE OR REPLACE VIEW v_estadisticas_clima AS
-SELECT 
-    e.clima,
-    COUNT(*) AS total_eventos,
-    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Eventos), 2) AS porcentaje,
-    COUNT(DISTINCT e.torneo) AS torneos_diferentes
-FROM Eventos e
-GROUP BY e.clima
-ORDER BY total_eventos DESC;
-
--- Vista: Torneos por plataforma
 CREATE OR REPLACE VIEW v_torneos_por_plataforma AS
 SELECT 
     plataforma_principal,
@@ -209,17 +183,6 @@ FROM Torneos
 GROUP BY plataforma_principal
 ORDER BY total_torneos DESC;
 
--- Vista: Usuarios por país con estadísticas
-CREATE OR REPLACE VIEW v_usuarios_por_pais AS
-SELECT 
-    u.pais,
-    COUNT(DISTINCT u.id) AS total_usuarios,
-    COUNT(DISTINCT o.id) AS total_organizadores,
-    ROUND(COUNT(DISTINCT o.id) * 100.0 / NULLIF(COUNT(DISTINCT u.id), 0), 2) AS porcentaje_organizadores
-FROM Usuarios u
-LEFT JOIN Organizadores o ON u.id = o.id
-GROUP BY u.pais
-ORDER BY total_usuarios DESC;
 
 -- Vista: Actividad mensual de torneos
 CREATE OR REPLACE VIEW v_actividad_mensual_torneos AS

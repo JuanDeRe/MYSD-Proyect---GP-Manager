@@ -73,13 +73,7 @@ WHERE juego = 'F1 2025'
 ORDER BY circuito, clima
 FETCH FIRST 10 ROWS ONLY;
 
--- 2.4 - Saber plataforma principal de torneos disponibles
--- Usa: v_torneos_plataforma
-SELECT torneo_nombre, plataforma_principal, juego, fecha_inicio, cupo
-FROM v_torneos_plataforma
-WHERE plataforma_principal = 'PC'
-ORDER BY fecha_inicio
-FETCH FIRST 5 ROWS ONLY;
+
 
 
 
@@ -182,24 +176,12 @@ END;
 -- 4. CONSULTAS ESTADÍSTICAS GENERALES
 
 
--- 4.2 - Estadísticas de clima
--- Usa: v_estadisticas_clima + idx_eventos_circuito
-SELECT clima, total_eventos, porcentaje, torneos_diferentes
-FROM v_estadisticas_clima
-ORDER BY total_eventos DESC;
-
 -- 4.3 - Torneos por plataforma
 -- Usa: v_torneos_por_plataforma
 SELECT plataforma_principal, total_torneos, porcentaje, organizadores_diferentes
 FROM v_torneos_por_plataforma
 ORDER BY total_torneos DESC;
 
--- 4.4 - Usuarios por país
--- Usa: v_usuarios_por_pais + idx_usuarios_pais
-SELECT pais, total_usuarios, total_organizadores, porcentaje_organizadores
-FROM v_usuarios_por_pais
-ORDER BY total_usuarios DESC
-FETCH FIRST 10 ROWS ONLY;
 
 -- 4.5 - Actividad mensual de torneos
 -- Usa: v_actividad_mensual_torneos + idx_torneos_fecha_inicio
