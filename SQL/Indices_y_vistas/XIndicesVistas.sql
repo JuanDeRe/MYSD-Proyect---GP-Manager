@@ -34,6 +34,7 @@ DROP INDEX idx_vehjuego_juego;
 DROP INDEX idx_vehtorneo_torneo;
 DROP INDEX idx_usuarios_pais;
 DROP INDEX idx_usuarios_nombre;
+DROP INDEX idx_eventos_torneo_fecha;
 DROP INDEX idx_vehiculos_categoria;
 DROP INDEX idx_circuitos_pais;
 DROP INDEX idx_carreras_torneo;
