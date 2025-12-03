@@ -13,9 +13,6 @@ CREATE INDEX idx_torneos_organizador ON Torneos(organizador);
 -- Torneos por juego (consultas de jugador: torneos de un juego específico)
 CREATE INDEX idx_torneos_juego ON Torneos(juego);
 
--- Eventos por torneo (navegación torneo -> eventos)
-CREATE INDEX idx_eventos_torneo ON Eventos(torneo);
-
 -- Eventos por circuito (estadísticas por circuito)
 CREATE INDEX idx_eventos_circuito ON Eventos(circuito);
 
@@ -25,8 +22,6 @@ CREATE INDEX idx_eventos_circuito ON Eventos(circuito);
 -- Torneos por fecha de inicio (consultas temporales)
 CREATE INDEX idx_torneos_fecha_inicio ON Torneos(fecha_inicio);
 
--- Eventos por fecha (consultas de calendario)
-CREATE INDEX idx_eventos_fecha ON Eventos(fecha);
 
 
 -- ÍNDICES COMPUESTOS PARA CONSULTAS COMPLEJAS
@@ -35,12 +30,6 @@ CREATE INDEX idx_torneos_org_estado ON Torneos(organizador, estado);
 
 -- Torneos por juego y estado (consultas de jugador)
 CREATE INDEX idx_torneos_juego_estado ON Torneos(juego, estado);
-
--- Eventos por torneo y estado (validaciones de triggers)
-CREATE INDEX idx_eventos_torneo_estado ON Eventos(torneo, estado);
-
--- Eventos por torneo y fecha (validaciones temporales)
-CREATE INDEX idx_eventos_torneo_fecha ON Eventos(torneo, fecha);
 
 
 -- ÍNDICES PARA TABLAS DE RELACIÓN
@@ -58,8 +47,6 @@ CREATE INDEX idx_vehtorneo_torneo ON VehiculosPorTorneo(torneo);
 
 
 -- ÍNDICES PARA BÚSQUEDAS POR USUARIO
--- Usuarios por nombre de usuario (login, búsquedas)
-CREATE INDEX idx_usuarios_nombre ON Usuarios(nombre_usuario);
 
 -- Usuarios por país (estadísticas geográficas)
 CREATE INDEX idx_usuarios_pais ON Usuarios(pais);
