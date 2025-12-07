@@ -10,12 +10,9 @@ CREATE INDEX idx_eventos_estado ON Eventos(estado);
 -- Torneos por organizador (consultas de organizador específico)
 CREATE INDEX idx_torneos_organizador ON Torneos(organizador);
 
--- Torneos por juego (consultas de jugador: torneos de un juego específico)
-CREATE INDEX idx_torneos_juego ON Torneos(juego);
 
 -- Eventos por circuito (estadísticas por circuito)
 CREATE INDEX idx_eventos_circuito ON Eventos(circuito);
-
 
 
 -- ÍNDICES PARA BÚSQUEDAS TEMPORALES
@@ -24,43 +21,10 @@ CREATE INDEX idx_torneos_fecha_inicio ON Torneos(fecha_inicio);
 
 
 
--- ÍNDICES COMPUESTOS PARA CONSULTAS COMPLEJAS
--- Torneos por organizador y estado (consultas gerenciales)
-CREATE INDEX idx_torneos_org_estado ON Torneos(organizador, estado);
-
--- Torneos por juego y estado (consultas de jugador)
-CREATE INDEX idx_torneos_juego_estado ON Torneos(juego, estado);
-
-
--- ÍNDICES PARA TABLAS DE RELACIÓN
--- CircuitosDisponibles por juego (consultas de jugador)
-CREATE INDEX idx_circdisp_juego ON CircuitosDisponibles(juego);
-
--- CircuitosDisponibles por circuito
-CREATE INDEX idx_circdisp_circuito ON CircuitosDisponibles(circuito);
-
--- VehiculosDeJuegos por juego (consultas de jugador)
-CREATE INDEX idx_vehjuego_juego ON VehiculosDeJuegos(juego);
-
--- VehiculosPorTorneo por torneo (consultas de organizador)
-CREATE INDEX idx_vehtorneo_torneo ON VehiculosPorTorneo(torneo);
-
-
--- ÍNDICES PARA BÚSQUEDAS POR USUARIO
-
--- Usuarios por país (estadísticas geográficas)
-CREATE INDEX idx_usuarios_pais ON Usuarios(pais);
-
 
 -- ÍNDICES PARA VEHÍCULOS Y CIRCUITOS
 -- Vehículos por categoría (filtros de jugador)
 CREATE INDEX idx_vehiculos_categoria ON Vehiculos(categoria);
-
--- Vehículos por año (filtros históricos)
-CREATE INDEX idx_vehiculos_año ON Vehiculos(año);
-
--- Circuitos por país (estadísticas geográficas)
-CREATE INDEX idx_circuitos_pais ON Circuitos(pais);
 
 
 -- ÍNDICES PARA TIPOS DE EVENTOS

@@ -236,18 +236,27 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_VEHICULO AS
         p_a_o_vehiculo IN NUMBER,
         p_categoria IN VARCHAR2,
         p_peso IN NUMBER,
-        p_hp IN NUMBER
+        p_hp IN NUMBER,
+        p_juego IN VARCHAR2
     ) IS
+    v_count NUMBER;
     BEGIN
-        INSERT INTO Vehiculos (marca, referencia, año, categoria, peso, hp)
-        VALUES (p_marca_vehiculo, p_referencia_vehiculo, p_a_o_vehiculo, p_categoria, p_peso, p_hp);
+        SELECT COUNT(*) INTO v_count FROM Vehiculos WHERE marca = p_marca_vehiculo AND referencia = p_referencia_vehiculo;
+        IF v_count = 0 THEN
+            INSERT INTO Vehiculos (marca, referencia, año, categoria, peso, hp)
+            VALUES (p_marca_vehiculo, p_referencia_vehiculo, p_a_o_vehiculo, p_categoria, p_peso, p_hp);
+        END IF;
+        INSERT INTO VehiculosdeJuegos (juego, marca_vehiculo, referencia_vehiculo) 
+            VALUES (p_juego, p_marca_vehiculo, p_referencia_vehiculo);
     END vehiculoAdicionar;
 
     PROCEDURE vehiculoEliminar(
         p_marca_vehiculo IN VARCHAR2,
-        p_referencia_vehiculo IN VARCHAR2
+        p_referencia_vehiculo IN VARCHAR2,
+        p_juego IN VARCHAR2
     ) IS
     BEGIN
+        DELETE FROM VehiculosdeJuegos WHERE juego = p_juego AND marca_vehiculo = p_marca_vehiculo AND referencia_vehiculo = p_referencia_vehiculo;
         DELETE FROM Vehiculos WHERE marca = p_marca_vehiculo AND referencia = p_referencia_vehiculo;
     END vehiculoEliminar;
 
@@ -258,17 +267,28 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_CIRCUITO AS
     PROCEDURE circuitoAdicionar(
         p_nombre IN VARCHAR2,
         p_pais IN VARCHAR2,
-        p_longitud IN NUMBER
+        p_longitud IN NUMBER,
+        p_juego IN VARCHAR2,
+        p_clima IN VARCHAR2
     ) IS
+    v_count NUMBER;
     BEGIN
-        INSERT INTO Circuitos (nombre, pais, longitud)
-        VALUES (p_nombre, p_pais, p_longitud);
+        SELECT COUNT(*) INTO v_count FROM Circuitos WHERE nombre = p_nombre;
+        IF v_count = 0 THEN
+            INSERT INTO Circuitos (nombre, pais, longitud)
+            VALUES (p_nombre, p_pais, p_longitud);
+        END IF;
+        INSERT INTO CircuitosDisponibles (juego, circuito, clima) 
+        VALUES (p_juego, p_nombre, p_clima);
     END circuitoAdicionar;
 
     PROCEDURE circuitoEliminar(
-        p_nombre IN VARCHAR2
+        p_nombre IN VARCHAR2,
+        p_juego IN VARCHAR2,
+        p_clima IN VARCHAR2
     ) IS
     BEGIN
+        DELETE FROM CircuitosDisponibles WHERE juego = p_juego AND circuito = p_nombre AND clima = p_clima;
         DELETE FROM Circuitos WHERE nombre = p_nombre;
     END circuitoEliminar;
 

@@ -120,12 +120,14 @@ CREATE OR REPLACE PACKAGE PK_MANTENER_VEHICULO AS
         p_a_o_vehiculo IN NUMBER,
         p_categoria IN VARCHAR2,
         p_peso IN NUMBER,
-        p_hp IN NUMBER
+        p_hp IN NUMBER,
+        p_juego IN VARCHAR2
     );
 
     PROCEDURE vehiculoEliminar(
         p_marca_vehiculo IN VARCHAR2,
-        p_referencia_vehiculo IN VARCHAR2
+        p_referencia_vehiculo IN VARCHAR2,
+        p_juego IN VARCHAR2
     );
 
 END PK_MANTENER_VEHICULO;
@@ -134,11 +136,15 @@ CREATE OR REPLACE PACKAGE PK_MANTENER_CIRCUITO AS
     PROCEDURE circuitoAdicionar(
         p_nombre IN VARCHAR2,
         p_pais IN VARCHAR2,
-        p_longitud IN NUMBER
+        p_longitud IN NUMBER,
+        p_juego IN VARCHAR2,
+        p_clima IN VARCHAR2
     );
 
     PROCEDURE circuitoEliminar(
-        p_nombre IN VARCHAR2
+        p_nombre IN VARCHAR2,
+        p_juego IN VARCHAR2,
+        p_clima IN VARCHAR2
     );
 
 END PK_MANTENER_CIRCUITO;

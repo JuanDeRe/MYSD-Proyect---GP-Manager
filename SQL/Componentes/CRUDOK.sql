@@ -156,47 +156,6 @@ PK_REGISTRAR_CLASIFICACION.clasificacionModificar(
 );
 END;
 /
-
--- Prueba mantener Vehiculo
---Adicionar vehiculo
-BEGIN
-PK_MANTENER_VEHICULO.vehiculoAdicionar(
-    p_marca_vehiculo => 'Ferrari',
-    p_referencia_vehiculo => 'Testarrossa',
-    p_a_o_vehiculo => 1985,
-    p_categoria => 'Deportivo',
-    p_peso => 1500,
-    p_hp => 500
-);
-END;
-/
---Modificar eliminar vehiculo
-BEGIN
-PK_MANTENER_VEHICULO.vehiculoEliminar(
-    p_marca_vehiculo => 'Ferrari',
-    p_referencia_vehiculo => 'Testarrossa'
-);
-END;
-/
-
--- Prueba mantener Circuito
---Adicionar circuito
-BEGIN
-PK_MANTENER_CIRCUITO.circuitoAdicionar(
-    p_nombre => 'Circuito de Prueba',
-    p_pais => 'España',
-    p_longitud => 5.5
-);
-END;
-/
---Eliminar circuito
-BEGIN
-PK_MANTENER_CIRCUITO.circuitoEliminar(
-    p_nombre => 'Circuito de Prueba'
-);
-END;
-/
-
 -- Prueba mantener Juego
 --Adicionar juego
 BEGIN
@@ -212,3 +171,50 @@ PK_MANTENER_JUEGO.juegoEliminar(
 );
 END;
 /
+
+-- Prueba mantener Vehiculo
+--Adicionar vehiculo
+BEGIN
+PK_MANTENER_VEHICULO.vehiculoAdicionar(
+    p_marca_vehiculo => 'Ferrari',
+    p_referencia_vehiculo => 'Testarrossa',
+    p_a_o_vehiculo => 1985,
+    p_categoria => 'Deportivo',
+    p_peso => 1500,
+    p_hp => 500,
+    p_juego => 'Assetto Corsa'
+);
+END;
+/
+--Modificar eliminar vehiculo
+BEGIN
+PK_MANTENER_VEHICULO.vehiculoEliminar(
+    p_marca_vehiculo => 'Ferrari',
+    p_referencia_vehiculo => 'Testarrossa',
+    p_juego => 'Assetto Corsa'
+);
+END;
+/
+
+-- Prueba mantener Circuito
+--Adicionar circuito
+BEGIN
+PK_MANTENER_CIRCUITO.circuitoAdicionar(
+    p_nombre => 'Circuito de Prueba',
+    p_pais => 'España',
+    p_longitud => 5.5,
+    p_juego => 'Assetto Corsa',
+    p_clima => 'Despejado'
+);
+END;
+/
+--Eliminar circuito
+BEGIN
+PK_MANTENER_CIRCUITO.circuitoEliminar(
+    p_nombre => 'Circuito de Prueba',
+    p_juego => 'Assetto Corsa',
+    p_clima => 'Despejado'
+);
+END;
+/
+
