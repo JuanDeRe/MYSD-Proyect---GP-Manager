@@ -38,6 +38,16 @@ START Indices_y_vistas/Indices.sql
 START Indices_y_vistas/Vistas.sql
 -- IndicesVistasOK
 START Indices_y_vistas/IndicesVistasOK.sql
+-- CRUDE
+START Componentes/CRUDE.sql
+-- CRUDI
+START Componentes/CRUDI.sql
+-- CRUDOK
+START Componentes/CRUDOK.sql
+-- CRUDNOOK
+START Componentes/CRUDNoOK.sql
+-- XCRUD
+START Componentes/XCRUD.sql
 -- XIndicesVistas
 START Indices_y_vistas/XIndicesVistas.sql
 -- XDisparadores

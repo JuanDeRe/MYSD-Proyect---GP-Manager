@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE BODY PK_MANTENER_TORNEO AS
+CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_TORNEO AS
 
     PROCEDURE torneoAdicionar(
         p_nombre IN VARCHAR2,
@@ -14,8 +14,8 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_TORNEO AS
     END torneoAdicionar;
 
     PROCEDURE torneoModificar(
-        p_id IN NUMBER,
         p_nombre IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_cupo IN NUMBER,
         p_estado IN VARCHAR2
     ) IS
@@ -24,25 +24,20 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_TORNEO AS
         SET nombre = p_nombre,
             cupo = p_cupo,
             estado = p_estado
-        WHERE id = p_id;
+        WHERE nombre = p_nombre AND juego = p_juego;
     END torneoModificar;
 
-    PROCEDURE torneoEliminar(
-        p_id IN NUMBER
-    ) IS
-    BEGIN
-        DELETE FROM Torneos WHERE id = p_id;
-    END torneoEliminar;
 
-END PK_MANTENER_TORNEO;
+END PK_REGISTRAR_TORNEO;
 
 
 
 
-CREATE OR REPLACE PACKAGE BODY PK_MANTENER_PRACTICA AS
+CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
 
     PROCEDURE practicaAdicionar(
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
@@ -51,152 +46,145 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_PRACTICA AS
     ) IS
     DECLARE
         v_evento_id NUMBER;
+        v_torneo_id VARCHAR2(100);
     BEGIN
-        SELECT SEQ_EVENTOS.NEXTVAL INTO v_evento_id FROM DUAL;
-        INSERT INTO Eventos (id, fecha, clima, hora_in_game, torneo, circuito)
-        VALUES (v_evento_id, p_fecha, p_clima, p_hora_in_game, p_torneo, p_circuito);
+        SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
+        SELECT numero_eventos+1 INTO v_evento_id FROM Torneos WHERE id = v_torneo_id;
+        INSERT INTO Eventos (fecha, clima, hora_in_game, torneo, circuito)
+        VALUES (p_fecha, p_clima, p_hora_in_game, v_torneo_id, p_circuito);
         INSERT INTO Practicas (id, torneo, duracion)
-        VALUES (v_evento_id, p_torneo, p_duracion);
+        VALUES (v_evento_id, v_torneo_id, p_duracion);
 
     END practicaAdicionar;
-
+    
     PROCEDURE practicaModificar(
         p_id IN NUMBER,
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
         p_duracion IN NUMBER
     ) IS
+        v_torneo_id VARCHAR2(100);
     BEGIN
+        SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
         UPDATE Eventos
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
-            torneo = p_torneo,
             circuito = p_circuito
-        WHERE id = p_id;
+        WHERE id = p_id AND torneo = v_torneo_id;
         UPDATE Practicas
-        SET torneo = p_torneo,
-            duracion = p_duracion
-        WHERE id = p_id;
+        SET duracion = p_duracion
+        WHERE id = p_id AND torneo = v_torneo_id;
+
     END practicaModificar;
-    PROCEDURE practicaEliminar(
-        p_id IN NUMBER
-    ) IS
-    BEGIN
-        DELETE FROM Practicas WHERE id = p_id;
-        DELETE FROM Eventos WHERE id = p_id;
-    END practicaEliminar;
-END PK_MANTENER_PRACTICA;
+
+END PK_REGISTRAR_PRACTICA;
 
 
-CREATE OR REPLACE PACKAGE BODY PK_MANTENER_CLASIFICACION AS
+CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CLASIFICACION AS
 
     PROCEDURE clasificacionAdicionar(
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN VARCHAR2
+        p_duracion IN NUMBER
     ) IS
     DECLARE
         v_evento_id NUMBER;
+        v_torneo_id VARCHAR2(100);
     BEGIN
-        SELECT SEQ_EVENTOS.NEXTVAL INTO v_evento_id FROM DUAL;
-        INSERT INTO Eventos (id, fecha, clima, hora_in_game, torneo, circuito)
-        VALUES (v_evento_id, p_fecha, p_clima, p_hora_in_game, p_torneo, p_circuito);
+        SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
+        SELECT numero_eventos+1 INTO v_evento_id FROM Torneos WHERE id = v_torneo_id;        
+        INSERT INTO Eventos (fecha, clima, hora_in_game, torneo, circuito)
+        VALUES (p_fecha, p_clima, p_hora_in_game, v_torneo_id, p_circuito);
         INSERT INTO Clasificaciones (id, torneo, duracion)
-        VALUES (v_evento_id, p_torneo, p_duracion);
+        VALUES (v_evento_id, v_torneo_id, p_duracion);
 
     END clasificacionAdicionar;
 
     PROCEDURE clasificacionModificar(
         p_id IN NUMBER,
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN VARCHAR2
+        p_duracion IN NUMBER
     ) IS
+        v_torneo_id VARCHAR2(100);
     BEGIN
+        SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
         UPDATE Eventos
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
-            torneo = p_torneo,
             circuito = p_circuito
-        WHERE id = p_id;
+        WHERE id = p_id AND torneo = v_torneo_id;
         UPDATE Clasificaciones
-        SET torneo = p_torneo,
-            duracion = p_duracion
-        WHERE id = p_id;
+        SET duracion = p_duracion
+        WHERE id = p_id AND torneo = v_torneo_id;
     END clasificacionModificar;
-    PROCEDURE clasificacionEliminar(
-        p_id IN NUMBER
-    ) IS
-    BEGIN
-        DELETE FROM Clasificaciones WHERE id = p_id;
-        DELETE FROM Eventos WHERE id = p_id;
-    END clasificacionEliminar;
-END PK_MANTENER_CLASIFICACION;
+
+END PK_REGISTRAR_CLASIFICACION;
 
 
-CREATE OR REPLACE PACKAGE BODY PK_MANTENER_CARRERA AS
+CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CARRERA AS
 
     PROCEDURE carreraAdicionar(
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
         p_numero_vueltas IN NUMBER
     ) IS
-    DECLARE
+        v_torneo_id VARCHAR2(100);
         v_evento_id NUMBER;
     BEGIN
-        SELECT SEQ_EVENTOS.NEXTVAL INTO v_evento_id FROM DUAL;
-        INSERT INTO Eventos (id, fecha, clima, hora_in_game, torneo, circuito)
-        VALUES (v_evento_id, p_fecha, p_clima, p_hora_in_game, p_torneo, p_circuito);
+        SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
+        SELECT numero_eventos+1 INTO v_evento_id FROM Torneos WHERE id = v_torneo_id;
+        INSERT INTO Eventos (fecha, clima, hora_in_game, torneo, circuito)
+        VALUES (p_fecha, p_clima, p_hora_in_game, v_torneo_id, p_circuito);
         INSERT INTO Carreras (id, torneo, numero_vueltas)
-        VALUES (v_evento_id, p_torneo, p_numero_vueltas);
+        VALUES (v_evento_id, v_torneo_id, p_numero_vueltas);
 
     END carreraAdicionar;
 
     PROCEDURE carreraModificar(
         p_id IN NUMBER,
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
         p_numero_vueltas IN NUMBER
     ) IS
+        v_torneo_id VARCHAR2(100);
     BEGIN
+        SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
         UPDATE Eventos
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
-            torneo = p_torneo,
             circuito = p_circuito
-        WHERE id = p_id;
+        WHERE id = p_id AND torneo = v_torneo_id;
         UPDATE Carreras
-        SET torneo = p_torneo,
+        SET torneo = v_torneo_id,
             numero_vueltas = p_numero_vueltas
-        WHERE id = p_id;
+        WHERE id = p_id AND torneo = v_torneo_id;
     END carreraModificar;
 
-    PROCEDURE carreraEliminar(
-        p_id IN NUMBER
-    ) IS
-    BEGIN
-        DELETE FROM Carreras WHERE id = p_id;
-        DELETE FROM Eventos WHERE id = p_id;
-    END carreraEliminar;
-END PK_MANTENER_CARRERA;
+END PK_REGISTRAR_CARRERA;
 
 CREATE OR REPLACE PACKAGE BODY PK_MANTENER_ORGANIZADOR AS
 

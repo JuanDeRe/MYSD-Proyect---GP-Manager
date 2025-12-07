@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE PK_MANTENER_TORNEO AS
+CREATE OR REPLACE PACKAGE PK_REGISTRAR_TORNEO AS
     PROCEDURE torneoAdicionar(
         p_nombre IN VARCHAR2,
         p_fecha_inicio IN DATE,
@@ -9,22 +9,19 @@ CREATE OR REPLACE PACKAGE PK_MANTENER_TORNEO AS
     );
 
     PROCEDURE torneoModificar(
-        p_id IN NUMBER,
         p_nombre IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_cupo IN NUMBER,
         p_estado IN VARCHAR2
     );
 
-    PROCEDURE torneoEliminar(
-        p_id IN NUMBER
-    );
 
-    FUNCTION consultarEventosTorneo RETURN SYS_REFCURSOR;
-END PK_MANTENER_TORNEO;
+END PK_REGISTRAR_TORNEO;
 
-CREATE OR REPLACE PACKAGE PK_MANTENER_CARRERA AS
+CREATE OR REPLACE PACKAGE PK_REGISTRAR_CARRERA AS
     PROCEDURE carreraAdicionar(
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
@@ -35,6 +32,7 @@ CREATE OR REPLACE PACKAGE PK_MANTENER_CARRERA AS
     PROCEDURE carreraModificar(
         p_id IN NUMBER,
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
@@ -42,15 +40,13 @@ CREATE OR REPLACE PACKAGE PK_MANTENER_CARRERA AS
         p_numero_vueltas IN NUMBER
     );
 
-    PROCEDURE carreraEliminar(
-        p_id IN NUMBER
-    );
 
-END PK_MANTENER_CARRERA;
+END PK_REGISTRAR_CARRERA;
 
-CREATE OR REPLACE PACKAGE PK_MANTENER_CLASIFICACION AS
+CREATE OR REPLACE PACKAGE PK_REGISTRAR_CLASIFICACION AS
     PROCEDURE clasificacionAdicionar(
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
@@ -61,6 +57,7 @@ CREATE OR REPLACE PACKAGE PK_MANTENER_CLASIFICACION AS
     PROCEDURE clasificacionModificar(
         p_id IN NUMBER,
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
@@ -68,15 +65,13 @@ CREATE OR REPLACE PACKAGE PK_MANTENER_CLASIFICACION AS
         p_duracion IN VARCHAR2
     );
 
-    PROCEDURE clasificacionEliminar(
-        p_id IN NUMBER
-    );
 
-END PK_MANTENER_CLASIFICACION;
+END PK_REGISTRAR_CLASIFICACION;
 
-CREATE OR REPLACE PACKAGE PK_MANTENER_PRACTICA AS
+CREATE OR REPLACE PACKAGE PK_REGISTRAR_PRACTICA AS
     PROCEDURE practicaAdicionar(
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
@@ -87,6 +82,7 @@ CREATE OR REPLACE PACKAGE PK_MANTENER_PRACTICA AS
     PROCEDURE practicaModificar(
         p_id IN NUMBER,
         p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
@@ -94,11 +90,8 @@ CREATE OR REPLACE PACKAGE PK_MANTENER_PRACTICA AS
         p_duracion IN VARCHAR2
     );
 
-    PROCEDURE practicaEliminar(
-        p_id IN NUMBER
-    );
 
-END PK_MANTENER_PRACTICA;
+END PK_REGISTRAR_PRACTICA;
 
 CREATE OR REPLACE PACKAGE PK_MANTENER_ORGANIZADOR AS
     PROCEDURE organizadorAdicionar(
