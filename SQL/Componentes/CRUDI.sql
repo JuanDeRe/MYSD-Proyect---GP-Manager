@@ -6,11 +6,12 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_TORNEO AS
         p_fecha_fin IN DATE,
         p_cupo IN NUMBER,
         p_plataforma_principal IN VARCHAR2,
-        p_juego IN VARCHAR2
+        p_juego IN VARCHAR2,
+        p_organizador IN VARCHAR2
     ) IS
     BEGIN
-        INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, juego)
-        VALUES (p_nombre, p_fecha_inicio, p_fecha_fin, p_cupo, p_plataforma_principal, p_juego);
+        INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, juego, organizador)
+        VALUES (p_nombre, p_fecha_inicio, p_fecha_fin, p_cupo, p_plataforma_principal, p_juego, p_organizador);
     END torneoAdicionar;
 
     PROCEDURE torneoModificar(
@@ -30,7 +31,7 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_TORNEO AS
 
 END PK_REGISTRAR_TORNEO;
 
-
+/
 
 
 CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
@@ -42,9 +43,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN NUMBER
+        p_duracion IN VARCHAR2
     ) IS
-    DECLARE
         v_evento_id NUMBER;
         v_torneo_id VARCHAR2(100);
     BEGIN
@@ -65,7 +65,7 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN NUMBER
+        p_duracion IN VARCHAR2
     ) IS
         v_torneo_id VARCHAR2(100);
     BEGIN
@@ -83,7 +83,7 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
     END practicaModificar;
 
 END PK_REGISTRAR_PRACTICA;
-
+/
 
 CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CLASIFICACION AS
 
@@ -94,9 +94,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CLASIFICACION AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN NUMBER
+        p_duracion IN VARCHAR2
     ) IS
-    DECLARE
         v_evento_id NUMBER;
         v_torneo_id VARCHAR2(100);
     BEGIN
@@ -117,7 +116,7 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CLASIFICACION AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN NUMBER
+        p_duracion IN VARCHAR2
     ) IS
         v_torneo_id VARCHAR2(100);
     BEGIN
@@ -135,7 +134,7 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CLASIFICACION AS
 
 END PK_REGISTRAR_CLASIFICACION;
 
-
+/
 CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CARRERA AS
 
     PROCEDURE carreraAdicionar(
@@ -185,7 +184,7 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CARRERA AS
     END carreraModificar;
 
 END PK_REGISTRAR_CARRERA;
-
+/
 CREATE OR REPLACE PACKAGE BODY PK_MANTENER_ORGANIZADOR AS
 
     PROCEDURE organizadorAdicionar(
@@ -193,10 +192,13 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_ORGANIZADOR AS
         p_pais IN VARCHAR2,
         p_correo IN VARCHAR2
     ) IS
+    v_count NUMBER;
     BEGIN
-        IF NOT EXISTS (SELECT 1 FROM Usuarios WHERE nombre_usuario = p_nombre_usuario) THEN
-            INSERT INTO Usuarios (nombre_usuario, correo) VALUES (p_nombre_usuario, p_correo);
-        END IF;
+    SELECT COUNT(*) INTO v_count FROM Usuarios WHERE nombre_usuario = p_nombre_usuario;
+    IF v_count = 0 THEN
+        INSERT INTO Usuarios (nombre_usuario, correo, pais)
+        VALUES (p_nombre_usuario, p_correo, p_pais);
+    END IF;
         INSERT INTO Organizadores (id)
         VALUES ((SELECT id FROM Usuarios WHERE nombre_usuario = p_nombre_usuario));
     END organizadorAdicionar;
@@ -206,22 +208,26 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_ORGANIZADOR AS
         p_pais IN VARCHAR2,
         p_correo IN VARCHAR2
     ) IS
+    v_id_usuario VARCHAR2(100);
     BEGIN
-        UPDATE Organizadores
+        SELECT id INTO v_id_usuario FROM Usuarios WHERE nombre_usuario = p_nombre_usuario;
+        UPDATE Usuarios
         SET pais = p_pais,
             correo = p_correo
-        WHERE nombre_usuario = p_nombre_usuario;
+        WHERE id = v_id_usuario;
     END organizadorModificar;
 
     PROCEDURE organizadorEliminar(
         p_nombre_usuario IN VARCHAR2
     ) IS
+    v_id_usuario VARCHAR2(100);
     BEGIN
-        DELETE FROM Organizadores WHERE nombre_usuario = p_nombre_usuario;
+        SELECT id INTO v_id_usuario FROM Usuarios WHERE nombre_usuario = p_nombre_usuario;
+        DELETE FROM Organizadores WHERE id = v_id_usuario;
     END organizadorEliminar;
 
 END PK_MANTENER_ORGANIZADOR;
-
+/
 CREATE OR REPLACE PACKAGE BODY PK_MANTENER_VEHICULO AS
 
     PROCEDURE vehiculoAdicionar(
@@ -246,7 +252,7 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_VEHICULO AS
     END vehiculoEliminar;
 
 END PK_MANTENER_VEHICULO;
-
+/
 CREATE OR REPLACE PACKAGE BODY PK_MANTENER_CIRCUITO AS
 
     PROCEDURE circuitoAdicionar(
@@ -267,7 +273,7 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_CIRCUITO AS
     END circuitoEliminar;
 
 END PK_MANTENER_CIRCUITO;
-
+/
 CREATE OR REPLACE PACKAGE BODY PK_MANTENER_JUEGO AS
 
     PROCEDURE juegoAdicionar(
@@ -286,3 +292,4 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_JUEGO AS
     END juegoEliminar;
 
 END PK_MANTENER_JUEGO;
+/

@@ -45,7 +45,7 @@ START Componentes/CRUDI.sql
 -- CRUDOK
 START Componentes/CRUDOK.sql
 -- CRUDNOOK
-START Componentes/CRUDNoOK.sql
+--START Componentes/CRUDNoOK.sql
 -- XCRUD
 START Componentes/XCRUD.sql
 -- XIndicesVistas
