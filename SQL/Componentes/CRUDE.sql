@@ -20,6 +20,28 @@ CREATE OR REPLACE PACKAGE PK_REGISTRAR_TORNEO AS
 END PK_REGISTRAR_TORNEO;
 /
 
+CREATE OR REPLACE PACKAGE PK_REGISTRAR_EVENTO AS
+    PROCEDURE eventoAdicionar(
+        p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
+        p_fecha IN DATE,
+        p_clima IN VARCHAR2,
+        p_hora_in_game IN VARCHAR2,
+        p_circuito IN VARCHAR2
+    );
+
+    PROCEDURE eventoModificar(
+        p_id IN NUMBER,
+        p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
+        p_fecha IN DATE,
+        p_clima IN VARCHAR2,
+        p_hora_in_game IN VARCHAR2,
+        p_circuito IN VARCHAR2
+    );
+END PK_REGISTRAR_EVENTO;
+/
+
 CREATE OR REPLACE PACKAGE PK_REGISTRAR_CARRERA AS
     PROCEDURE carreraAdicionar(
         p_torneo IN VARCHAR2,

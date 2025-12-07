@@ -46,6 +46,16 @@ START Componentes/CRUDI.sql
 START Componentes/CRUDOK.sql
 -- CRUDNOOK
 START Componentes/CRUDNoOK.sql
+-- ActoresE
+START Seguridad/ActoresE.sql
+-- ActoresI
+START Seguridad/ActoresI.sql
+-- Seguridad
+START Seguridad/Seguridad.sql
+-- SeguridadOK
+START Seguridad/SeguridadOK.sql
+-- XSeguridad
+START Seguridad/XSeguridad.sql
 -- XCRUD
 START Componentes/XCRUD.sql
 -- XIndicesVistas

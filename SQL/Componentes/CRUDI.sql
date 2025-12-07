@@ -33,6 +33,45 @@ END PK_REGISTRAR_TORNEO;
 
 /
 
+CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_EVENTO AS
+
+    PROCEDURE eventoAdicionar(
+        p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
+        p_fecha IN DATE,
+        p_clima IN VARCHAR2,
+        p_hora_in_game IN VARCHAR2,
+        p_circuito IN VARCHAR2
+    ) IS
+        v_torneo_id VARCHAR2(100);
+    BEGIN
+        SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
+        INSERT INTO Eventos (fecha, clima, hora_in_game, torneo, circuito)
+        VALUES (p_fecha, p_clima, p_hora_in_game, v_torneo_id, p_circuito);
+    END eventoAdicionar;
+
+    PROCEDURE eventoModificar(
+        p_id IN NUMBER,
+        p_torneo IN VARCHAR2,
+        p_juego IN VARCHAR2,
+        p_fecha IN DATE,
+        p_clima IN VARCHAR2,
+        p_hora_in_game IN VARCHAR2,
+        p_circuito IN VARCHAR2
+    ) IS
+        v_torneo_id VARCHAR2(100);
+    BEGIN
+        SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
+        UPDATE Eventos
+        SET fecha = p_fecha,
+            clima = p_clima,
+            hora_in_game = p_hora_in_game,
+            circuito = p_circuito
+        WHERE id = p_id AND torneo = v_torneo_id;
+    END eventoModificar;
+
+END PK_REGISTRAR_EVENTO;
+/
 
 CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
 

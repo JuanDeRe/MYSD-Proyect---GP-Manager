@@ -1,0 +1,12 @@
+REVOKE EXECUTE ON pk_organizador FROM rol_organizador;
+REVOKE EXECUTE ON pk_desarrollador FROM rol_desarrollador;
+REVOKE EXECUTE ON pk_jugador FROM rol_jugador;
+DROP ROLE rol_organizador;
+DROP ROLE rol_desarrollador;
+DROP ROLE rol_jugador;
+DROP PACKAGE BODY pk_organizador;
+DROP PACKAGE BODY pk_desarrollador;
+DROP PACKAGE BODY pk_jugador;
+DROP PACKAGE pk_organizador;
+DROP PACKAGE pk_desarrollador;
+DROP PACKAGE pk_jugador;

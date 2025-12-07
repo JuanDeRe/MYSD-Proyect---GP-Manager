@@ -45,7 +45,7 @@ PK_REGISTRAR_TORNEO.torneoAdicionar(
     p_cupo => 16,
     p_plataforma_principal => 'PC',
     p_juego => 'F1 2025',
-    p_organizador => 'ORG0000000'
+    p_organizador => 'organizador1'
 );
 END;
 /
@@ -57,7 +57,7 @@ PK_REGISTRAR_TORNEO.torneoAdicionar(
     p_cupo => 50,
     p_plataforma_principal => 'Xbox',
     p_juego => 'Assetto Corsa',
-    p_organizador => 'ORG0000000'
+    p_organizador => 'organizador1'
 );
 END;
 /
