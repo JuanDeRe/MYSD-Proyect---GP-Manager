@@ -11,7 +11,7 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_TORNEO AS
     ) IS
     BEGIN
         INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, juego, organizador)
-        VALUES (p_nombre, p_fecha_inicio, p_fecha_fin, p_cupo, p_plataforma_principal, p_juego, p_organizador);
+        VALUES (p_nombre, p_fecha_inicio, p_fecha_fin, p_cupo, p_plataforma_principal, p_juego, (SELECT id FROM Usuarios WHERE nombre_usuario = p_organizador));
     END torneoAdicionar;
 
     PROCEDURE torneoModificar(
@@ -49,9 +49,9 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
         v_torneo_id VARCHAR2(100);
     BEGIN
         SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
-        SELECT numero_eventos+1 INTO v_evento_id FROM Torneos WHERE id = v_torneo_id;
         INSERT INTO Eventos (fecha, clima, hora_in_game, torneo, circuito)
         VALUES (p_fecha, p_clima, p_hora_in_game, v_torneo_id, p_circuito);
+        SELECT numero_eventos INTO v_evento_id FROM Torneos WHERE id = v_torneo_id;
         INSERT INTO Practicas (id, torneo, duracion)
         VALUES (v_evento_id, v_torneo_id, p_duracion);
 

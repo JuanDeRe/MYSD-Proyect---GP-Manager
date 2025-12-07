@@ -1,20 +1,5 @@
 
 -- Un desarrollador agrega juegos, vehiculos y circuitos a la plataforma
--- Prueba agregar Vehiculo
-BEGIN
-PK_MANTENER_VEHICULO.vehiculoAdicionar(
-    p_marca_vehiculo => 'Ferrari',
-    p_referencia_vehiculo => 'SF21',
-    p_a_o_vehiculo => 2021,
-    p_categoria => 'Deportivo',
-    p_peso => 752,
-    p_hp => 1000,
-    p_juego => 'Gran Turismo Sport'
-);
-END;
-/
--- verificar que el vehiculo se haya agregado correctamente
-SELECT * FROM Vehiculos WHERE marca = 'Ferrari' AND referencia = 'SF21';
 
 -- Prueba agregar juegos
 BEGIN
@@ -32,6 +17,22 @@ END;
 
 -- verificar que el juego se haya agregado correctamente
 SELECT * FROM Juegos;
+
+-- Prueba agregar Vehiculo
+BEGIN
+PK_MANTENER_VEHICULO.vehiculoAdicionar(
+    p_marca_vehiculo => 'Ferrari',
+    p_referencia_vehiculo => 'SF21',
+    p_a_o_vehiculo => 2021,
+    p_categoria => 'Deportivo',
+    p_peso => 752,
+    p_hp => 1000,
+    p_juego => 'Gran Turismo Sport'
+);
+END;
+/
+-- verificar que el vehiculo se haya agregado correctamente
+SELECT * FROM Vehiculos WHERE marca = 'Ferrari' AND referencia = 'SF21';
 
 -- Prueba agregar circuito
 BEGIN
@@ -51,7 +52,7 @@ PK_MANTENER_CIRCUITO.circuitoAdicionar(
     p_pais => 'Reino Unido',
     p_longitud => 5.891,
     p_juego => 'Gran Turismo Sport',
-    p_clima => 'Lluvioso'
+    p_clima => 'Lluvia ligera'
 );
 END;
 /
@@ -157,7 +158,7 @@ PK_REGISTRAR_CARRERA.carreraAdicionar(
     p_torneo => 'Torneo de año nuevo',
     p_juego => 'Gran Turismo Sport',
     p_fecha => TO_DATE('2025-12-31 15:00', 'YYYY-MM-DD HH24:MI'),
-    p_clima => 'Lluvioso',
+    p_clima => 'Lluvia ligera',
     p_hora_in_game => '15:00',
     p_circuito => 'Silverstone',
     p_numero_vueltas => 20
@@ -205,7 +206,7 @@ PK_REGISTRAR_CARRERA.carreraModificar(
     p_torneo => 'Torneo de año nuevo',
     p_juego => 'Gran Turismo Sport',
     p_fecha => TO_DATE('2026-01-02 15:00', 'YYYY-MM-DD HH24:MI'),
-    p_clima => 'Lluvioso',
+    p_clima => 'Lluvia ligera',
     p_hora_in_game => '16:00',
     p_circuito => 'Silverstone',
     p_numero_vueltas => 25

@@ -15,12 +15,6 @@ CREATE INDEX idx_torneos_organizador ON Torneos(organizador);
 CREATE INDEX idx_eventos_circuito ON Eventos(circuito);
 
 
--- ÍNDICES PARA BÚSQUEDAS TEMPORALES
--- Torneos por fecha de inicio (consultas temporales)
-CREATE INDEX idx_torneos_fecha_inicio ON Torneos(fecha_inicio);
-
-
-
 
 -- ÍNDICES PARA VEHÍCULOS Y CIRCUITOS
 -- Vehículos por categoría (filtros de jugador)
