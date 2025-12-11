@@ -194,7 +194,13 @@ FOR EACH ROW
 DECLARE
     v_torneo_info   Torneos%ROWTYPE;
     v_valida        NUMBER;
+    v_torneo_estado Torneos.estado%TYPE;
 BEGIN
+    -- Si se está actualizando a Cancelado y proviene de un trigger de cancelación de torneo, omitir validaciones
+    IF :NEW.estado = 'Cancelado' AND :OLD.estado = 'Programado' THEN
+        RETURN;
+    END IF;
+
     IF UPDATING('id') OR UPDATING('torneo') THEN
         RAISE_APPLICATION_ERROR(-20007,'No se pueden modificar el id ni el torneo de un evento');
     END IF;
@@ -234,7 +240,7 @@ BEGIN
     END IF;
 
     --Validaciones solo si está en estado Programado
-    IF :OLD.estado = 'Programado' THEN
+    IF :OLD.estado = 'Programado' AND :NEW.estado != 'Cancelado' THEN
         -- Obtener datos del torneo
         SELECT fecha_inicio, fecha_fin, juego
         INTO v_torneo_info.fecha_inicio, v_torneo_info.fecha_fin, v_torneo_info.juego

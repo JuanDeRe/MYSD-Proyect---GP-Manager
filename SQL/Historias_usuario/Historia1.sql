@@ -101,7 +101,7 @@ PK_REGISTRAR_TORNEO.torneoAdicionar(
     p_fecha_fin => TO_DATE('2026-01-03', 'YYYY-MM-DD'),
     p_cupo => 32,
     p_plataforma_principal => 'PC',
-    p_juego => 'F1 2025',
+    p_juego => 'Gran Turismo Sport',
     p_organizador => 'juandere16'
 );
 END;
@@ -109,7 +109,7 @@ END;
 -- verificar que el torneo se haya registrado correctamente
 SELECT * FROM Torneos WHERE nombre = 'Torneo de año nuevo';
 
--- El organizador quiere cambiar el cupo y el juego del torneo
+-- El organizador quiere cambiar el cupo del torneo
 --Modificar torneo
 BEGIN
     PK_REGISTRAR_TORNEO.torneoModificar(
@@ -223,6 +223,8 @@ SELECT * FROM Carreras WHERE torneo = (SELECT id FROM Torneos WHERE nombre = 'To
 BEGIN
     PK_REGISTRAR_TORNEO.torneoModificar(
         p_nombre => 'Torneo de año nuevo',
+        p_juego => 'Gran Turismo Sport',
+        p_cupo => 20,
         p_estado => 'Cancelado'
     );
 END;
