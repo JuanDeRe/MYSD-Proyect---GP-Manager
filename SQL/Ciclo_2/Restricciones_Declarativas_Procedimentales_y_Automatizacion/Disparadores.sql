@@ -25,7 +25,7 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE TRIGGER trg_acrualizar_rango
+CREATE OR REPLACE TRIGGER trg_actualizar_rango
 AFTER INSERT ON Resultados
 FOR EACH ROW
 DECLARE
@@ -44,5 +44,104 @@ BEGIN
             UPDATE Jugadores SET rango = 'Intermedio' WHERE id = :NEW.jugador;
         END IF;
     END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_registrar_inscripcion
+BEFORE INSERT ON Inscripciones
+FOR EACH ROW
+DECLARE
+organizador_torneo Organizadores.id%TYPE;
+fecha_inicio_torneo Torneos.fecha_inicio%TYPE;
+BEGIN
+    :NEW.fecha := SYSDATE;
+    SELECT fecha_inicio INTO fecha_inicio_torneo FROM Torneos
+    WHERE id = :NEW.torneo;
+    IF :NEW.fecha > fecha_inicio_torneo THEN
+        RAISE_APPLICATION_ERROR(-20021, 'No se pueden hacer inscripciones antes de la fecha del torneo.');
+    END IF;
+    SELECT organizador INTO organizador_torneo FROM Torneos
+    WHERE organizador = :NEW.jugador;
+    IF organizador_torneo IS NOT NULL THEN
+        :NEW.estado := 'Aceptada';
+    ELSE
+        :NEW.estado := 'Pendiente';
+    END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_actualizar_inscripcion
+BEFORE UPDATE ON Inscripciones
+FOR EACH ROW
+DECLARE
+fecha_inicio_torneo Torneos.fecha_inicio%TYPE;
+BEGIN
+    IF :OLD.estado != :NEW.estado THEN
+        SELECT fecha_inicio INTO fecha_inicio_torneo FROM Torneos
+        WHERE id = :NEW.torneo;
+        IF SYSDATE > fecha_inicio_torneo THEN
+            RAISE_APPLICATION_ERROR(-20022, 'No se pueden modificar inscripciones después de la fecha de inicio del torneo.');
+        END IF;
+        IF :OLD.estado != 'Pendiente' THEN
+            RAISE_APPLICATION_ERROR(-20023, 'Solo se puede pasar una inscripción de pendiente a aceptada o rechazada.');
+        END IF;
+    ELSE
+         RAISE_APPLICATION_ERROR(-20023, 'Solo se puede actualizar el estado de una inscripción.');
+    END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_incripcion_ranking
+AFTER UPDATE ON Inscripciones
+FOR EACH ROW
+BEGIN
+    IF :NEW.estado = 'Aceptada' AND :OLD.estado = 'Pendiente' THEN
+        INSERT INTO Rankings (jugador, torneo)
+        VALUES (:NEW.jugador, :NEW.torneo);
+    END IF;
+END;
+
+CREATE OR REPLACE TRIGGER trg_registrar_ranking
+BEFORE INSERT ON Rankings
+FOR EACH ROW
+DECLARE
+numero_jugadores NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO numero_jugadores FROM Rankings
+    WHERE torneo = :NEW.torneo;
+    :NEW.posicion := numero_jugadores + 1;
+    :NEW.puntos_totales := 0;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_actualizar_ranking
+AFTER UPDATE ON Rankings
+FOR EACH ROW
+DECLARE
+    v_posicion_actual NUMBER;
+    v_puntos_anteriores NUMBER;
+BEGIN
+    v_posicion_actual := 0;    
+    v_puntos_anteriores := -1;
+        -- Recorrer todos los jugadores del torneo, ordenados por puntos
+    FOR jugador_rec IN (
+        SELECT jugador, puntos_totales
+        FROM Rankings
+        WHERE torneo = :NEW.torneo
+        ORDER BY puntos_totales DESC
+    ) LOOP
+            -- Si los puntos son diferentes, aumentamos la posición
+        IF jugador_rec.puntos_totales != v_puntos_anteriores THEN
+            v_posicion_actual := v_posicion_actual + 1;
+        END IF;
+        -- Actualizar la posición del jugador actual
+        UPDATE Rankings 
+        SET posicion = v_posicion_actual
+        WHERE jugador = jugador_rec.jugador 
+        AND torneo = :NEW.torneo;
+        -- Guardar puntos del jugador actual para comparar
+        v_puntos_anteriores := jugador_rec.puntos_totales;
+    END LOOP;
+    COMMIT;
 END;
 /

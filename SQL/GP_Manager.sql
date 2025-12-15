@@ -52,6 +52,8 @@ START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Dispar
 
 -- DisparadoresOK
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresOK.sql
+START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresOK.sql
+
 -- DisparadoresNoOK
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresNoOK.sql
 -- Indices
