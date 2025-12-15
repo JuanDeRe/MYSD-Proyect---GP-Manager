@@ -24,7 +24,7 @@ CREATE TABLE Resultados (
     torneo VARCHAR2(20) NOT NULL,
     evento NUMBER(4) NOT NULL,
     posicion_final NUMBER(3) NOT NULL,
-    posicion_inicial NUMBER(3) NOT NULL,
+    posicion_inicio NUMBER(3) NOT NULL,
     tiempo_total NUMBER(6) NOT NULL,
     mejor_vuelta NUMBER(7) NOT NULL,
     puntos_obtenidos NUMBER(3) NOT NULL,

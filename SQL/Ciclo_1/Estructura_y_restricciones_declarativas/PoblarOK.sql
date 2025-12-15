@@ -11,6 +11,8 @@ INSERT INTO Vehiculos (marca, referencia, año, categoria, peso, hp) VALUES ('Fe
 INSERT INTO Vehiculos (marca, referencia, año, categoria, peso, hp) VALUES ('Porsche', '911 GT3 RS', 2020, 'Deportivo', 1430.00, 520);
 INSERT INTO Vehiculos (marca, referencia, año, categoria, peso, hp) VALUES ('BMW', 'E46', 2003, 'Calle', 1655.00, 168);
 INSERT INTO Vehiculos (marca, referencia, año, categoria, peso, hp) VALUES ('Red Bull', 'RB21', 2025, 'Monoplaza', NULL, NULL);
+INSERT INTO Vehiculos (marca, referencia, año, categoria, peso, hp) VALUES ('Mercedes', 'W12', 2025, 'Monoplaza', NULL, NULL);
+
 
 INSERT INTO CircuitosDisponibles (juego, circuito, clima) VALUES ('Gran Turismo 7', 'Spa-Francorchamps', 'Despejado');
 INSERT INTO CircuitosDisponibles (juego, circuito, clima) VALUES ('F1 2025', 'Monza', 'Despejado');
@@ -19,6 +21,7 @@ INSERT INTO CircuitosDisponibles (juego, circuito, clima) VALUES ('Assetto Corsa
 
 INSERT INTO VehiculosDeJuegos (juego, marca_vehiculo, referencia_vehiculo) VALUES ('Gran Turismo 7', 'Ferrari', '488 GTB');
 INSERT INTO VehiculosDeJuegos (juego, marca_vehiculo, referencia_vehiculo) VALUES ('F1 2025', 'Red Bull', 'RB21');
+INSERT INTO VehiculosDeJuegos (juego, marca_vehiculo, referencia_vehiculo) VALUES ('F1 2025', 'Mercedes', 'W12');
 INSERT INTO VehiculosDeJuegos (juego, marca_vehiculo, referencia_vehiculo) VALUES ('Assetto Corsa', 'Porsche', '911 GT3 RS');
 
 INSERT INTO Usuarios (id, nombre_usuario, correo, pais, fecha_registro) VALUES ('RAC0000000', 'RacerX', 'racerx@example.com', 'España', TO_DATE('2023-01-01', 'YYYY-MM-DD'));
