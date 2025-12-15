@@ -1,4 +1,4 @@
-ALTER TABLE Jugadores ADD CONSTRAINT chk_jugadores_ranking_global CHECK (ranking_global >= 1);
+ALTER TABLE Jugadores ADD CONSTRAINT chk_jugadores_rango CHECK (rango IN ('Novato', 'Intermedio', 'Avanzado', 'Pro', 'Leyenda'));
 ALTER TABLE Rankings ADD CONSTRAINT chk_rankings_posicion CHECK (posicion >= 1);
 ALTER TABLE Rankings ADD CONSTRAINT chk_rankings_puntos_totales CHECK (puntos_totales >= 0);
 ALTER TABLE Inscripciones ADD CONSTRAINT chk_inscripciones_estado CHECK (estado IN ('Pendiente', 'Aceptada', 'Rechazada'));

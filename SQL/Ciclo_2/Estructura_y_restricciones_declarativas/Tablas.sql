@@ -1,6 +1,6 @@
 CREATE TABLE Jugadores (
     id VARCHAR2(10) NOT NULL,
-    ranking_global NUMBER NOT NULL
+    rango VARCHAR2(15) NOT NULL
 );
 
 CREATE TABLE Inscripciones (
@@ -15,7 +15,7 @@ CREATE TABLE Inscripciones (
 CREATE TABLE Rankings (
     jugador VARCHAR2(10) NOT NULL,
     torneo VARCHAR2(20) NOT NULL,
-    posicion NUMBER(3),
+    posicion NUMBER(3) NOT NULL,
     puntos_totales NUMBER(4) NOT NULL
 );
 

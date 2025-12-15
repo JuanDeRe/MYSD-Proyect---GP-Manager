@@ -1,5 +1,5 @@
-INSERT INTO Jugadores (id, ranking_global) VALUES ('RAC0000000', 1);
-INSERT INTO Jugadores (id, ranking_global) VALUES ('SPE0000000', 2);
+INSERT INTO Jugadores (id, rango) VALUES ('RAC0000000', 'Novato');
+INSERT INTO Jugadores (id, rango) VALUES ('SPE0000000', 'Novato');
 
 INSERT INTO Inscripciones (jugador, torneo, marca_vehiculo, referencia_vehiculo, fecha, estado) VALUES ('RAC0000000', 'RAC00000000000000000', 'Red Bull', 'RB21', TO_DATE('2023-06-05', 'YYYY-MM-DD'), 'Aceptada');
 INSERT INTO Inscripciones (jugador, torneo, marca_vehiculo, referencia_vehiculo, fecha, estado) VALUES ('SPE0000000', 'RAC00000000000000000', 'Mercedes', 'W12', TO_DATE('2023-06-05', 'YYYY-MM-DD'), 'Aceptada');

@@ -1,1 +1,0 @@
-ALTER TABLE Jugadores ADD CONSTRAINT uk_jugadores_ranking_global UNIQUE (ranking_global);

@@ -32,16 +32,24 @@ START Ciclo_2/Estructura_y_restricciones_declarativas/PoblarNoOK.sql
 START Ciclo_1/Estructura_y_restricciones_declarativas/Consultas.sql
 -- Tuplas
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Tuplas.sql
+START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Tuplas.sql
+
 -- TuplasOK
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/TuplasOk.sql
+START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/TuplasOk.sql
+
 -- TuplasNoOK
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/TuplasNoOK.sql
+START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/TuplasNoOK.sql
+
 -- Acciones
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Acciones.sql
 -- AccionesOK
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/AccionesOK.sql
 -- Disparadores
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Disparadores.sql
+START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Disparadores.sql
+
 -- DisparadoresOK
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresOK.sql
 -- DisparadoresNoOK
