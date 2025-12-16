@@ -9,7 +9,9 @@ DECLARE
     -- parte string del usuario
     parte_usuario_id VARCHAR(200);
 BEGIN
+    IF :NEW.fecha_registro IS NULL THEN
     :NEW.fecha_registro := SYSDATE;
+    END IF;
     -- extrae la parte del usuario del nombre de usuario
     parte_usuario_id := UPPER(SUBSTR(:NEW.nombre_usuario, 0, 3));
     -- obtiene la cantidad de usuarios 
@@ -49,15 +51,10 @@ CREATE OR REPLACE TRIGGER trg_torneos_creacion
 BEFORE INSERT ON Torneos
 FOR EACH ROW
 BEGIN
-    IF :NEW.Fecha_fin < SYSDATE OR :NEW.Fecha_inicio < SYSDATE THEN
+    IF :NEW.Fecha_fin < :NEW.Fecha_inicio THEN
         RAISE_APPLICATION_ERROR(-20016, 'Fecha de torneo invalida');
     END IF;
-
-    IF :NEW.Fecha_inicio = TRUNC(SYSDATE) THEN
-        :NEW.estado := 'En curso';
-    ELSIF :NEW.fecha_inicio > TRUNC(SYSDATE) THEN
-        :NEW.estado := 'Programado';
-    END IF;
+    :NEW.estado := 'Programado';
     :NEW.id := :NEW.organizador || LPAD(seq_torneo_id.NEXTVAL, 10, '0');
     :NEW.numero_eventos := 0;
 END;
