@@ -43,7 +43,7 @@ START Indices_y_vistas/IndicesVistasOK.sql
 -- XIndicesVistas
 START Indices_y_vistas/XIndicesVistas.sql
 -- Poblar_Automatizado
-START Restricciones_Declarativas_Procedimentales_y_Automatizacion/InsertsMasivos/Poblar_Automatizado.sql
+START Restricciones_Declarativas_Procedimentales_y_Automatizacion/InsertsMasivos/Poblar_Masivo_Generado.sql
 -- Consultas Masivas
 START Restricciones_Declarativas_Procedimentales_y_Automatizacion/Consultas_Masivas.sql
 -- XDisparadores
