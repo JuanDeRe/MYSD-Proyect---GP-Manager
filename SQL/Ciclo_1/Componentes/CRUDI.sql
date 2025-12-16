@@ -73,7 +73,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_EVENTO AS
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
-        p_circuito IN VARCHAR2
+        p_circuito IN VARCHAR2,
+        p_estado IN VARCHAR2 DEFAULT 'Programado'
     ) IS
         v_torneo_id VARCHAR2(100);
     BEGIN
@@ -82,7 +83,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_EVENTO AS
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
-            circuito = p_circuito
+            circuito = p_circuito,
+            estado = p_estado
         WHERE id = p_id AND torneo = v_torneo_id;
         
         COMMIT;
@@ -133,7 +135,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN VARCHAR2
+        p_duracion IN VARCHAR2,
+        p_estado IN VARCHAR2 DEFAULT 'Programado'
     ) IS
         v_torneo_id VARCHAR2(100);
     BEGIN
@@ -143,7 +146,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
-            circuito = p_circuito
+            circuito = p_circuito,
+            estado = p_estado
         WHERE id = p_id AND torneo = v_torneo_id;
         
         UPDATE Practicas
@@ -198,7 +202,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CLASIFICACION AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN VARCHAR2
+        p_duracion IN VARCHAR2,
+        p_estado IN VARCHAR2 DEFAULT 'Programado'
     ) IS
         v_torneo_id VARCHAR2(100);
     BEGIN
@@ -208,7 +213,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CLASIFICACION AS
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
-            circuito = p_circuito
+            circuito = p_circuito,
+            estado = p_estado
         WHERE id = p_id AND torneo = v_torneo_id;
         
         UPDATE Clasificaciones
@@ -263,7 +269,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CARRERA AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_numero_vueltas IN NUMBER
+        p_numero_vueltas IN NUMBER,
+        p_estado IN VARCHAR2 DEFAULT 'Programado'
     ) IS
         v_torneo_id VARCHAR2(100);
     BEGIN
@@ -273,7 +280,8 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CARRERA AS
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
-            circuito = p_circuito
+            circuito = p_circuito,
+            estado = p_estado
         WHERE id = p_id AND torneo = v_torneo_id;
         
         UPDATE Carreras

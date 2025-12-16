@@ -37,7 +37,8 @@ CREATE OR REPLACE PACKAGE PK_REGISTRAR_EVENTO AS
         p_fecha IN DATE,
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
-        p_circuito IN VARCHAR2
+        p_circuito IN VARCHAR2,
+        p_estado IN VARCHAR2 DEFAULT 'Programado'
     );
 END PK_REGISTRAR_EVENTO;
 /
@@ -61,7 +62,8 @@ CREATE OR REPLACE PACKAGE PK_REGISTRAR_CARRERA AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_numero_vueltas IN NUMBER
+        p_numero_vueltas IN NUMBER,
+        p_estado IN VARCHAR2 DEFAULT 'Programado'
     );
 
 
@@ -86,7 +88,8 @@ CREATE OR REPLACE PACKAGE PK_REGISTRAR_CLASIFICACION AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN VARCHAR2
+        p_duracion IN VARCHAR2,
+        p_estado IN VARCHAR2 DEFAULT 'Programado'
     );
 
 END PK_REGISTRAR_CLASIFICACION;
@@ -110,7 +113,8 @@ CREATE OR REPLACE PACKAGE PK_REGISTRAR_PRACTICA AS
         p_clima IN VARCHAR2,
         p_hora_in_game IN VARCHAR2,
         p_circuito IN VARCHAR2,
-        p_duracion IN VARCHAR2
+        p_duracion IN VARCHAR2,
+        p_estado IN VARCHAR2 DEFAULT 'Programado'
     );
 
 
