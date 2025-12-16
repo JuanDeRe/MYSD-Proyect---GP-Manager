@@ -33,7 +33,7 @@ END;
 /
 -- verificar que el vehiculo se haya agregado correctamente
 SELECT * FROM Vehiculos WHERE marca = 'Ferrari' AND referencia = 'SF21';
-
+SELECT * FROM VehiculosDeJuegos WHERE juego = 'Gran Turismo Sport' AND marca_vehiculo = 'Ferrari' AND referencia_vehiculo = 'SF21';
 -- Prueba agregar circuito
 BEGIN
 PK_MANTENER_CIRCUITO.circuitoAdicionar(
