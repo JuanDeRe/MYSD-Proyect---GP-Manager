@@ -11,7 +11,14 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_TORNEO AS
     ) IS
     BEGIN
         INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, cupo, plataforma_principal, juego, organizador)
-        VALUES (p_nombre, p_fecha_inicio, p_fecha_fin, p_cupo, p_plataforma_principal, p_juego, (SELECT id FROM Usuarios WHERE nombre_usuario = p_organizador));
+        VALUES (p_nombre, p_fecha_inicio, p_fecha_fin, p_cupo, p_plataforma_principal, p_juego, 
+                (SELECT id FROM Usuarios WHERE nombre_usuario = p_organizador));
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END torneoAdicionar;
 
     PROCEDURE torneoModificar(
@@ -22,15 +29,18 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_TORNEO AS
     ) IS
     BEGIN
         UPDATE Torneos
-        SET nombre = p_nombre,
-            cupo = p_cupo,
+        SET cupo = p_cupo,
             estado = p_estado
         WHERE nombre = p_nombre AND juego = p_juego;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END torneoModificar;
 
-
 END PK_REGISTRAR_TORNEO;
-
 /
 
 CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_EVENTO AS
@@ -48,6 +58,12 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_EVENTO AS
         SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
         INSERT INTO Eventos (fecha, clima, hora_in_game, torneo, circuito)
         VALUES (p_fecha, p_clima, p_hora_in_game, v_torneo_id, p_circuito);
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END eventoAdicionar;
 
     PROCEDURE eventoModificar(
@@ -68,6 +84,12 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_EVENTO AS
             hora_in_game = p_hora_in_game,
             circuito = p_circuito
         WHERE id = p_id AND torneo = v_torneo_id;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END eventoModificar;
 
 END PK_REGISTRAR_EVENTO;
@@ -90,10 +112,17 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
         SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
         INSERT INTO Eventos (fecha, clima, hora_in_game, torneo, circuito)
         VALUES (p_fecha, p_clima, p_hora_in_game, v_torneo_id, p_circuito);
+        
         SELECT numero_eventos INTO v_evento_id FROM Torneos WHERE id = v_torneo_id;
+        
         INSERT INTO Practicas (id, torneo, duracion)
         VALUES (v_evento_id, v_torneo_id, p_duracion);
-
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END practicaAdicionar;
     
     PROCEDURE practicaModificar(
@@ -109,16 +138,23 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_PRACTICA AS
         v_torneo_id VARCHAR2(100);
     BEGIN
         SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
+        
         UPDATE Eventos
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
             circuito = p_circuito
         WHERE id = p_id AND torneo = v_torneo_id;
+        
         UPDATE Practicas
         SET duracion = p_duracion
         WHERE id = p_id AND torneo = v_torneo_id;
-
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END practicaModificar;
 
 END PK_REGISTRAR_PRACTICA;
@@ -139,12 +175,19 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CLASIFICACION AS
         v_torneo_id VARCHAR2(100);
     BEGIN
         SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
-        SELECT numero_eventos+1 INTO v_evento_id FROM Torneos WHERE id = v_torneo_id;        
+        SELECT numero_eventos+1 INTO v_evento_id FROM Torneos WHERE id = v_torneo_id;
+        
         INSERT INTO Eventos (fecha, clima, hora_in_game, torneo, circuito)
         VALUES (p_fecha, p_clima, p_hora_in_game, v_torneo_id, p_circuito);
+        
         INSERT INTO Clasificaciones (id, torneo, duracion)
         VALUES (v_evento_id, v_torneo_id, p_duracion);
-
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END clasificacionAdicionar;
 
     PROCEDURE clasificacionModificar(
@@ -160,20 +203,28 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CLASIFICACION AS
         v_torneo_id VARCHAR2(100);
     BEGIN
         SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
+        
         UPDATE Eventos
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
             circuito = p_circuito
         WHERE id = p_id AND torneo = v_torneo_id;
+        
         UPDATE Clasificaciones
         SET duracion = p_duracion
         WHERE id = p_id AND torneo = v_torneo_id;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END clasificacionModificar;
 
 END PK_REGISTRAR_CLASIFICACION;
-
 /
+
 CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CARRERA AS
 
     PROCEDURE carreraAdicionar(
@@ -190,11 +241,18 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CARRERA AS
     BEGIN
         SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
         SELECT numero_eventos+1 INTO v_evento_id FROM Torneos WHERE id = v_torneo_id;
+        
         INSERT INTO Eventos (fecha, clima, hora_in_game, torneo, circuito)
         VALUES (p_fecha, p_clima, p_hora_in_game, v_torneo_id, p_circuito);
+        
         INSERT INTO Carreras (id, torneo, numero_vueltas)
         VALUES (v_evento_id, v_torneo_id, p_numero_vueltas);
-
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END carreraAdicionar;
 
     PROCEDURE carreraModificar(
@@ -210,20 +268,29 @@ CREATE OR REPLACE PACKAGE BODY PK_REGISTRAR_CARRERA AS
         v_torneo_id VARCHAR2(100);
     BEGIN
         SELECT id INTO v_torneo_id FROM Torneos WHERE nombre = p_torneo AND juego = p_juego;
+        
         UPDATE Eventos
         SET fecha = p_fecha,
             clima = p_clima,
             hora_in_game = p_hora_in_game,
             circuito = p_circuito
         WHERE id = p_id AND torneo = v_torneo_id;
+        
         UPDATE Carreras
         SET torneo = v_torneo_id,
             numero_vueltas = p_numero_vueltas
         WHERE id = p_id AND torneo = v_torneo_id;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END carreraModificar;
 
 END PK_REGISTRAR_CARRERA;
 /
+
 CREATE OR REPLACE PACKAGE BODY PK_MANTENER_ORGANIZADOR AS
 
     PROCEDURE organizadorAdicionar(
@@ -233,13 +300,20 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_ORGANIZADOR AS
     ) IS
     v_count NUMBER;
     BEGIN
-    SELECT COUNT(*) INTO v_count FROM Usuarios WHERE nombre_usuario = p_nombre_usuario;
-    IF v_count = 0 THEN
-        INSERT INTO Usuarios (nombre_usuario, correo, pais)
-        VALUES (p_nombre_usuario, p_correo, p_pais);
-    END IF;
+        SELECT COUNT(*) INTO v_count FROM Usuarios WHERE nombre_usuario = p_nombre_usuario;
+        IF v_count = 0 THEN
+            INSERT INTO Usuarios (nombre_usuario, correo, pais)
+            VALUES (p_nombre_usuario, p_correo, p_pais);
+        END IF;
+        
         INSERT INTO Organizadores (id)
         VALUES ((SELECT id FROM Usuarios WHERE nombre_usuario = p_nombre_usuario));
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END organizadorAdicionar;
 
     PROCEDURE organizadorModificar(
@@ -254,6 +328,12 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_ORGANIZADOR AS
         SET pais = p_pais,
             correo = p_correo
         WHERE id = v_id_usuario;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END organizadorModificar;
 
     PROCEDURE organizadorEliminar(
@@ -263,10 +343,17 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_ORGANIZADOR AS
     BEGIN
         SELECT id INTO v_id_usuario FROM Usuarios WHERE nombre_usuario = p_nombre_usuario;
         DELETE FROM Organizadores WHERE id = v_id_usuario;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END organizadorEliminar;
 
 END PK_MANTENER_ORGANIZADOR;
 /
+
 CREATE OR REPLACE PACKAGE BODY PK_MANTENER_VEHICULO AS
 
     PROCEDURE vehiculoAdicionar(
@@ -285,8 +372,15 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_VEHICULO AS
             INSERT INTO Vehiculos (marca, referencia, año, categoria, peso, hp)
             VALUES (p_marca_vehiculo, p_referencia_vehiculo, p_a_o_vehiculo, p_categoria, p_peso, p_hp);
         END IF;
+        
         INSERT INTO VehiculosdeJuegos (juego, marca_vehiculo, referencia_vehiculo) 
             VALUES (p_juego, p_marca_vehiculo, p_referencia_vehiculo);
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END vehiculoAdicionar;
 
     PROCEDURE vehiculoEliminar(
@@ -295,12 +389,22 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_VEHICULO AS
         p_juego IN VARCHAR2
     ) IS
     BEGIN
-        DELETE FROM VehiculosdeJuegos WHERE juego = p_juego AND marca_vehiculo = p_marca_vehiculo AND referencia_vehiculo = p_referencia_vehiculo;
-        DELETE FROM Vehiculos WHERE marca = p_marca_vehiculo AND referencia = p_referencia_vehiculo;
+        DELETE FROM VehiculosdeJuegos 
+        WHERE juego = p_juego AND marca_vehiculo = p_marca_vehiculo AND referencia_vehiculo = p_referencia_vehiculo;
+        
+        DELETE FROM Vehiculos 
+        WHERE marca = p_marca_vehiculo AND referencia = p_referencia_vehiculo;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END vehiculoEliminar;
 
 END PK_MANTENER_VEHICULO;
 /
+
 CREATE OR REPLACE PACKAGE BODY PK_MANTENER_CIRCUITO AS
 
     PROCEDURE circuitoAdicionar(
@@ -317,8 +421,15 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_CIRCUITO AS
             INSERT INTO Circuitos (nombre, pais, longitud)
             VALUES (p_nombre, p_pais, p_longitud);
         END IF;
+        
         INSERT INTO CircuitosDisponibles (juego, circuito, clima) 
         VALUES (p_juego, p_nombre, p_clima);
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END circuitoAdicionar;
 
     PROCEDURE circuitoEliminar(
@@ -327,12 +438,22 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_CIRCUITO AS
         p_clima IN VARCHAR2
     ) IS
     BEGIN
-        DELETE FROM CircuitosDisponibles WHERE juego = p_juego AND circuito = p_nombre AND clima = p_clima;
-        DELETE FROM Circuitos WHERE nombre = p_nombre;
+        DELETE FROM CircuitosDisponibles 
+        WHERE juego = p_juego AND circuito = p_nombre AND clima = p_clima;
+        
+        DELETE FROM Circuitos 
+        WHERE nombre = p_nombre;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END circuitoEliminar;
 
 END PK_MANTENER_CIRCUITO;
 /
+
 CREATE OR REPLACE PACKAGE BODY PK_MANTENER_JUEGO AS
 
     PROCEDURE juegoAdicionar(
@@ -341,6 +462,12 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_JUEGO AS
     BEGIN
         INSERT INTO Juegos (nombre)
         VALUES (p_nombre);
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END juegoAdicionar;
 
     PROCEDURE juegoEliminar(
@@ -348,6 +475,12 @@ CREATE OR REPLACE PACKAGE BODY PK_MANTENER_JUEGO AS
     ) IS
     BEGIN
         DELETE FROM Juegos WHERE nombre = p_nombre;
+        
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
     END juegoEliminar;
 
 END PK_MANTENER_JUEGO;
