@@ -24,6 +24,10 @@ START ../Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Tup
 
 -- Acciones
 START ../Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Acciones.sql
+
+-- PoblarOk
+START ../Ciclo_1/Estructura_y_restricciones_declarativas/PoblarOK.sql
+
 -- Disparadores
 START ../Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Disparadores.sql
 START ../Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Disparadores.sql

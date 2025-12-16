@@ -43,9 +43,9 @@ PK_REGISTRAR_CARRERA.carreraAdicionar(
     p_torneo => 'Mini Torneo F1',
     p_juego => 'F1 2025',
     p_fecha => TO_DATE('2026-01-10 16:00', 'YYYY-MM-DD HH24:MI'),
-    p_clima => 'Nublado',
+    p_clima => 'Despejado',
     p_hora_in_game => '16:00',
-    p_circuito => 'Silverstone',
+    p_circuito => 'Monza',
     p_numero_vueltas => 10
 );
 
