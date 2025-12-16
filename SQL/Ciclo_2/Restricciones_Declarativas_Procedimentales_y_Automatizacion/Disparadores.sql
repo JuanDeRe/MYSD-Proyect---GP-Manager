@@ -58,6 +58,8 @@ CREATE OR REPLACE TRIGGER trg_registrar_inscripcion
 BEFORE INSERT ON Inscripciones
 FOR EACH ROW
 DECLARE
+juego_torneo Juegos.nombre%TYPE;
+v_count NUMBER;
 organizador_torneo Organizadores.id%TYPE;
 fecha_inicio_torneo Torneos.fecha_inicio%TYPE;
 BEGIN
@@ -69,6 +71,14 @@ BEGIN
     IF :NEW.fecha > fecha_inicio_torneo THEN
         RAISE_APPLICATION_ERROR(-20021, 'No se pueden hacer inscripciones despues de la fecha del torneo.');
     END IF;
+    SELECT juego INTO juego_torneo FROM Torneos
+    WHERE id = :NEW.torneo;
+    SELECT COUNT(*) INTO v_count FROM VehiculosDeJuegos
+    WHERE marca_vehiculo = :NEW.marca_vehiculo AND referencia_vehiculo = :NEW.referencia_vehiculo AND juego = juego_torneo;
+    IF v_count = 0 THEN
+        RAISE_APPLICATION_ERROR(-20024, 'El vehículo especificado no existe en el juego del torneo.');
+    END IF;
+
     SELECT organizador INTO organizador_torneo FROM Torneos
     WHERE id = :NEW.torneo;
     IF organizador_torneo = :NEW.jugador THEN
