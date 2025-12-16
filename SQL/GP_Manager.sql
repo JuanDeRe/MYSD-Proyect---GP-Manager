@@ -86,6 +86,8 @@ START Ciclo_1/Componentes/XCRUD.sql
 START Ciclo_1/Indices_y_vistas/XIndicesVistas.sql
 -- XDisparadores
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/XDisparadores.sql
+START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/XDisparadores.sql
+
 -- XPoblar
 START Ciclo_1/Estructura_y_restricciones_declarativas/XPoblar.sql
 START Ciclo_2/Estructura_y_restricciones_declarativas/XPoblar.sql
