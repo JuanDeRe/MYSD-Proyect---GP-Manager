@@ -66,12 +66,20 @@ START Ciclo_1/Indices_y_vistas/Vistas.sql
 START Ciclo_1/Indices_y_vistas/IndicesVistasOK.sql
 -- CRUDE
 START Ciclo_1/Componentes/CRUDE.sql
+START Ciclo_2/Componentes/CRUDE.sql
+
 -- CRUDI
 START Ciclo_1/Componentes/CRUDI.sql
+START Ciclo_2/Componentes/CRUDI.sql
+
 -- CRUDOK
 START Ciclo_1/Componentes/CRUDOK.sql
+START Ciclo_2/Componentes/CRUDOK.sql
+
 -- CRUDNOOK
 START Ciclo_1/Componentes/CRUDNoOK.sql
+START Ciclo_2/Componentes/CRUDNoOK.sql
+
 -- ActoresE
 START Ciclo_1/Seguridad/ActoresE.sql
 -- ActoresI
@@ -84,6 +92,8 @@ START Ciclo_1/Seguridad/SeguridadOK.sql
 START Ciclo_1/Seguridad/XSeguridad.sql
 -- XCRUD
 START Ciclo_1/Componentes/XCRUD.sql
+START Ciclo_2/Componentes/XCRUD.sql
+
 -- XIndicesVistas
 START Ciclo_1/Indices_y_vistas/XIndicesVistas.sql
 -- XDisparadores
