@@ -360,7 +360,7 @@ DECLARE
 BEGIN
     SELECT estado INTO estado_evento FROM Eventos
     WHERE id = :NEW.id AND torneo = :NEW.torneo;
-    IF ('Programado') != estado_evento THEN
+    IF 'Programado' != estado_evento  AND :NEW.numero_vueltas != :OLD.numero_vueltas THEN
         RAISE_APPLICATION_ERROR(-20012, 'Solo se pueden cambiar el numero de vueltas si el evento esta en estado Programado');
     END IF;
 END;
@@ -374,7 +374,7 @@ DECLARE
 BEGIN
     SELECT estado INTO estado_evento FROM Eventos
     WHERE id = :NEW.id AND torneo = :NEW.torneo;
-    IF ('Programado') != estado_evento THEN
+    IF ('Programado') != estado_evento AND :NEW.duracion != :OLD.duracion THEN
         RAISE_APPLICATION_ERROR(-20013, 'Solo se pueden cambiar la duracion si el evento esta en estado Programado');
     END IF;
 END;
@@ -388,7 +388,7 @@ DECLARE
 BEGIN
     SELECT estado INTO estado_evento FROM Eventos
     WHERE id = :NEW.id AND torneo = :NEW.torneo;
-    IF ('Programado') != estado_evento THEN
+    IF ('Programado') != estado_evento AND :NEW.duracion != :OLD.duracion THEN
         RAISE_APPLICATION_ERROR(-20014, 'Solo se pueden cambiar la duracion si el evento esta en estado Programado');
     END IF;
 END;

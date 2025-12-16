@@ -54,7 +54,7 @@ PK_REGISTRAR_CARRERA.carreraAdicionar(
     p_torneo => 'Mini Torneo F1',
     p_juego => 'F1 2025',
     p_fecha => TO_DATE('2026-01-11 16:00', 'YYYY-MM-DD HH24:MI'),
-    p_clima => 'Despejado',
+    p_clima => 'Lluvia ligera',
     p_hora_in_game => '16:00',
     p_circuito => 'Monza',
     p_numero_vueltas => 10
@@ -141,7 +141,7 @@ PK_REGISTRAR_RESULTADO.ResultadoAdicionar(
     p_posicion_inicio => 1,
     p_posicion_final => 1,
     p_tiempo_total => 100000,
-    p_mejor_vuelta => 1275100,
+    p_mejor_vuelta => 127510,
     p_puntos_obtenidos => 25
 );
 PK_REGISTRAR_RESULTADO.ResultadoAdicionar(
@@ -153,7 +153,7 @@ PK_REGISTRAR_RESULTADO.ResultadoAdicionar(
     p_posicion_inicio => 2,
     p_posicion_final => 2,
     p_tiempo_total => 101000,
-    p_mejor_vuelta => 1375100,
+    p_mejor_vuelta => 137510,
     p_puntos_obtenidos => 18
 );
 END;
@@ -161,7 +161,6 @@ END;
 SELECT * FROM Resultados 
 JOIN Torneos ON Resultados.torneo = Torneos.id
 WHERE Torneos.nombre = 'Mini Torneo F1';
-
 -- El segundo evento se lleva a cabo y se registran los resultados
 BEGIN
 PK_REGISTRAR_CARRERA.carreraModificar(
@@ -169,7 +168,7 @@ PK_REGISTRAR_CARRERA.carreraModificar(
     p_torneo => 'Mini Torneo F1',
     p_juego => 'F1 2025',
     p_fecha => TO_DATE('2026-01-11 16:00', 'YYYY-MM-DD HH24:MI'),
-    p_clima => 'Despejado',
+    p_clima => 'Lluvia ligera',
     p_hora_in_game => '16:00',
     p_circuito => 'Monza',
     p_numero_vueltas => 10,
@@ -179,8 +178,8 @@ PK_REGISTRAR_CARRERA.carreraModificar(
     p_id => 2,
     p_torneo => 'Mini Torneo F1',
     p_juego => 'F1 2025',
-    p_fecha => TO_DATE('2026-01-10 16:00', 'YYYY-MM-DD HH24:MI'),
-    p_clima => 'Despejado',
+    p_fecha => TO_DATE('2026-01-11 16:00', 'YYYY-MM-DD HH24:MI'),
+    p_clima => 'Lluvia ligera',
     p_hora_in_game => '16:00',
     p_circuito => 'Monza',
     p_numero_vueltas => 10,
