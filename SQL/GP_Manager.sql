@@ -56,6 +56,8 @@ START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Dispar
 
 -- DisparadoresNoOK
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresNoOK.sql
+START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/DisparadoresNoOK.sql
+
 -- Indices
 START Ciclo_1/Indices_y_vistas/Indices.sql
 -- Vistas

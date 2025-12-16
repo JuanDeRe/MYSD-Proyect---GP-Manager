@@ -1,10 +1,9 @@
-
 -- Torneo prueba
 INSERT INTO Usuarios (nombre_usuario,pais) VALUES ('Verstappen','Netherlands');
 INSERT INTO Organizadores (id) VALUES ('VER0000000');
 INSERT INTO Usuarios (nombre_usuario,pais) VALUES ('Leclerc','Monaco');
-INSERT INTO Torneos (id,nombre,organizador,fecha_inicio,fecha_fin,juego,cupo,plataforma_principal) VALUES 
-('VER00000000000000003','Torneo ciclo 2','VER0000000',TO_DATE('2025-12-01','YYYY-MM-DD'),TO_DATE('2025-12-15','YYYY-MM-DD'), 'F1 2025',20,'PC');
+INSERT INTO Torneos (nombre,organizador,fecha_inicio,fecha_fin,juego,cupo,plataforma_principal) VALUES 
+('Torneo ciclo 2','VER0000000',TO_DATE('2025-12-01','YYYY-MM-DD'),TO_DATE('2025-12-15','YYYY-MM-DD'), 'F1 2025',20,'PC');
 INSERT INTO Eventos (torneo,fecha,clima,hora_in_game,circuito) VALUES 
 ('VER00000000000000003',TO_DATE('2025-12-01 12:00','YYYY-MM-DD HH24:MI'),'Despejado','14:00','Monza');
 INSERT INTO Practicas (torneo,id,duracion) VALUES 

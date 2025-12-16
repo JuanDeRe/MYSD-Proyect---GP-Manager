@@ -67,7 +67,7 @@ BEGIN
     SELECT fecha_inicio INTO fecha_inicio_torneo FROM Torneos
     WHERE id = :NEW.torneo;
     IF :NEW.fecha > fecha_inicio_torneo THEN
-        RAISE_APPLICATION_ERROR(-20021, 'No se pueden hacer inscripciones antes de la fecha del torneo.');
+        RAISE_APPLICATION_ERROR(-20021, 'No se pueden hacer inscripciones despues de la fecha del torneo.');
     END IF;
     SELECT organizador INTO organizador_torneo FROM Torneos
     WHERE id = :NEW.torneo;
