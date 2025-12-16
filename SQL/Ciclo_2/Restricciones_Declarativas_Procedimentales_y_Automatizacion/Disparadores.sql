@@ -3,50 +3,56 @@ CREATE OR REPLACE TRIGGER trg_adicionar_jugador
 BEFORE INSERT ON Jugadores
 FOR EACH ROW
 BEGIN
+    :NEW.eventos_finalizados := 0;
     :NEW.rango := 'Novato';
 END;
 /
--- Agregar resultado solo si el evento está finalizado y actualizar puntos en el ranking
+-- Actualizar el rango del jugador basado en el número de eventos finalizados
+CREATE OR REPLACE TRIGGER trg_actualizar_rango
+BEFORE UPDATE OF eventos_finalizados ON Jugadores
+FOR EACH ROW
+BEGIN
+  IF :NEW.eventos_finalizados >= 100 THEN
+    :NEW.rango := 'Leyenda';
+  ELSIF :NEW.eventos_finalizados >= 50 THEN
+    :NEW.rango := 'Pro';
+  ELSIF :NEW.eventos_finalizados >= 10 THEN
+    :NEW.rango := 'Avanzado';
+  ELSIF :NEW.eventos_finalizados >= 5 THEN
+    :NEW.rango := 'Intermedio';
+  END IF;
+END;
+/
+
+-- Agregar resultado solo si el evento está finalizado 
 CREATE OR REPLACE TRIGGER trg_adicionar_resultado
 BEFORE INSERT ON Resultados
 FOR EACH ROW
 DECLARE
-estado_evento VARCHAR2;
-puntos_actuales NUMBER;
+estado_evento Eventos.estado%TYPE;
 BEGIN
     SELECT estado INTO estado_evento FROM Eventos
     WHERE id = :NEW.evento AND torneo = :NEW.torneo;
     IF estado_evento != 'Finalizado' THEN
         RAISE_APPLICATION_ERROR(-20020, 'No se pueden agregar resultados a eventos no finalizados.');
     END IF;
-    SELECT puntos_totales INTO puntos_actuales FROM Rankings
-    WHERE jugador = :NEW.jugador AND torneo = :NEW.torneo;
-    UPDATE Rankings SET puntos_totales = puntos_actuales + :NEW.puntos_obtenidos
+    UPDATE Rankings SET puntos_totales = puntos_totales + :NEW.puntos_obtenidos
     WHERE jugador = :NEW.jugador AND torneo = :NEW.torneo;
 END;
 /
--- Actualizar el rango del jugador basado en el número de eventos finalizados
-CREATE OR REPLACE TRIGGER trg_actualizar_rango
+-- Incrementar el conteo de eventos finalizados para el jugador al registrar un resultado 'Finished'
+CREATE OR REPLACE TRIGGER trg_incrementar_eventos
 AFTER INSERT ON Resultados
 FOR EACH ROW
-DECLARE
-n_eventos NUMBER;
 BEGIN
-    IF :NEW.estado_resultado = 'Finished' THEN
-        SELECT COUNT(*) INTO n_eventos FROM Resultados
-        WHERE estado_resultado = 'Finished' AND jugador = :NEW.jugador;
-        IF n_eventos >= 100 THEN
-            UPDATE Jugadores SET rango = 'Leyenda' WHERE id = :NEW.jugador;
-        ELSIF n_eventos >= 50 THEN
-            UPDATE Jugadores SET rango = 'Pro' WHERE id = :NEW.jugador;
-        ELSIF n_eventos >= 30 THEN
-            UPDATE Jugadores SET rango = 'Avanzado' WHERE id = :NEW.jugador;
-        ELSIF n_eventos >= 10 THEN
-            UPDATE Jugadores SET rango = 'Intermedio' WHERE id = :NEW.jugador;
-        END IF;
-    END IF;
+  IF :NEW.estado_resultado = 'Finished' THEN
+    UPDATE Jugadores
+    SET eventos_finalizados = eventos_finalizados + 1
+    WHERE id = :NEW.jugador;
+  END IF;
 END;
 /
+
 -- Gestionar inscripciones y actualizar el ranking al aceptar una inscripción
 CREATE OR REPLACE TRIGGER trg_registrar_inscripcion
 BEFORE INSERT ON Inscripciones
@@ -55,16 +61,20 @@ DECLARE
 organizador_torneo Organizadores.id%TYPE;
 fecha_inicio_torneo Torneos.fecha_inicio%TYPE;
 BEGIN
-    :NEW.fecha := SYSDATE;
+    IF :NEW.fecha IS NULL THEN
+        :NEW.fecha := SYSDATE;
+    END IF;
     SELECT fecha_inicio INTO fecha_inicio_torneo FROM Torneos
     WHERE id = :NEW.torneo;
     IF :NEW.fecha > fecha_inicio_torneo THEN
         RAISE_APPLICATION_ERROR(-20021, 'No se pueden hacer inscripciones antes de la fecha del torneo.');
     END IF;
     SELECT organizador INTO organizador_torneo FROM Torneos
-    WHERE organizador = :NEW.jugador;
-    IF organizador_torneo IS NOT NULL THEN
+    WHERE id = :NEW.torneo;
+    IF organizador_torneo = :NEW.jugador THEN
         :NEW.estado := 'Aceptada';
+        INSERT INTO Rankings (jugador, torneo)
+        VALUES (:NEW.jugador, :NEW.torneo);
     ELSE
         :NEW.estado := 'Pendiente';
     END IF;
@@ -80,7 +90,7 @@ BEGIN
     IF :OLD.estado != :NEW.estado THEN
         SELECT fecha_inicio INTO fecha_inicio_torneo FROM Torneos
         WHERE id = :NEW.torneo;
-        IF SYSDATE > fecha_inicio_torneo THEN
+        IF :NEW.fecha > fecha_inicio_torneo THEN
             RAISE_APPLICATION_ERROR(-20022, 'No se pueden modificar inscripciones después de la fecha de inicio del torneo.');
         END IF;
         IF :OLD.estado != 'Pendiente' THEN
@@ -117,33 +127,32 @@ END;
 /
 -- Actualizar posiciones en el ranking tras una actualización de puntos
 CREATE OR REPLACE TRIGGER trg_actualizar_ranking
-AFTER UPDATE ON Rankings
-FOR EACH ROW
-DECLARE
-    v_posicion_actual NUMBER;
-    v_puntos_anteriores NUMBER;
+AFTER UPDATE OF puntos_totales ON Rankings
 BEGIN
-    v_posicion_actual := 0;    
-    v_puntos_anteriores := -1;
-        -- Recorrer todos los jugadores del torneo, ordenados por puntos
-    FOR jugador_rec IN (
+  -- Recalcular posiciones por torneo
+  FOR t IN (SELECT DISTINCT torneo FROM Rankings) LOOP
+    DECLARE
+      v_pos NUMBER := 0;
+      v_prev NUMBER := -1;
+    BEGIN
+      FOR r IN (
         SELECT jugador, puntos_totales
         FROM Rankings
-        WHERE torneo = :NEW.torneo
+        WHERE torneo = t.torneo
         ORDER BY puntos_totales DESC
-    ) LOOP
-            -- Si los puntos son diferentes, aumentamos la posición
-        IF jugador_rec.puntos_totales != v_puntos_anteriores THEN
-            v_posicion_actual := v_posicion_actual + 1;
+      ) LOOP
+        IF r.puntos_totales != v_prev THEN
+          v_pos := v_pos + 1;
         END IF;
-        -- Actualizar la posición del jugador actual
-        UPDATE Rankings 
-        SET posicion = v_posicion_actual
-        WHERE jugador = jugador_rec.jugador 
-        AND torneo = :NEW.torneo;
-        -- Guardar puntos del jugador actual para comparar
-        v_puntos_anteriores := jugador_rec.puntos_totales;
-    END LOOP;
-    COMMIT;
+
+        UPDATE Rankings
+        SET posicion = v_pos
+        WHERE jugador = r.jugador
+          AND torneo  = t.torneo;
+
+        v_prev := r.puntos_totales;
+      END LOOP;
+    END;
+  END LOOP;
 END;
 /

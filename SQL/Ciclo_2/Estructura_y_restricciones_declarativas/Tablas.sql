@@ -1,6 +1,7 @@
 CREATE TABLE Jugadores (
     id VARCHAR2(10) NOT NULL,
-    rango VARCHAR2(15) NOT NULL
+    rango VARCHAR2(15) NOT NULL,
+    eventos_finalizados NUMBER NOT NULL
 );
 
 CREATE TABLE Inscripciones (
