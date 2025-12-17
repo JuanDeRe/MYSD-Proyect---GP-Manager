@@ -6,7 +6,7 @@ DROP VIEW v_inscripciones_pendientes;
 DROP VIEW v_jugadores_confirmados;
 DROP VIEW v_top3_torneos_finalizados;
 DROP VIEW v_mejores_vueltas_circuito;
-DROP VIEW v_top10_jugadores_activos;
+DROP VIEW v_top5_vehiculos_inscritos;
 DROP VIEW v_organizador_mas_inscripciones;
 DROP VIEW v_inscripciones_por_mes;
 DROP INDEX idx_jugadores_rango;

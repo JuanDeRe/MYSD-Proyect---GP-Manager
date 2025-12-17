@@ -64,6 +64,7 @@ CREATE OR REPLACE VIEW v_resultados_jugador AS
 SELECT 
     res.jugador,
     u.nombre_usuario AS jugador_nombre,
+    t.id AS torneo_id,
     t.nombre AS torneo_nombre,
     e.fecha AS fecha_evento,
     c.nombre AS circuito,
@@ -99,7 +100,7 @@ LEFT JOIN Practicas p ON e.id = p.id AND e.torneo = p.torneo;
 -- Inscripciones pendientes por torneo
 CREATE OR REPLACE VIEW v_inscripciones_pendientes AS
 SELECT 
-    i.torneo,
+    i.torneo AS torneo_id,
     t.nombre AS torneo_nombre,
     i.jugador,
     u.nombre_usuario AS jugador_nombre,
@@ -120,7 +121,7 @@ WHERE i.estado = 'Pendiente';
 -- Jugadores confirmados en un torneo
 CREATE OR REPLACE VIEW v_jugadores_confirmados AS
 SELECT 
-    i.torneo,
+    i.torneo AS torneo_id,
     t.nombre AS torneo_nombre,
     t.estado AS estado_torneo,
     i.jugador,
@@ -141,7 +142,7 @@ ORDER BY i.fecha;
 -- Top 3 del ranking en torneos finalizados
 CREATE OR REPLACE VIEW v_top3_torneos_finalizados AS
 SELECT 
-    r.torneo,
+    r.torneo AS torneo_id,
     t.nombre AS torneo_nombre,
     t.fecha_inicio,
     t.fecha_fin,
@@ -164,7 +165,8 @@ SELECT
     c.nombre AS circuito,
     c.pais AS circuito_pais,
     c.longitud AS circuito_longitud,
-    c.clima AS circuito_clima,
+    cd.clima AS circuito_clima,
+    MIN(res.mejor_vuelta) AS mejor_vuelta_numerica,
     LPAD(FLOOR(MIN(res.mejor_vuelta) / 100000), 2, '0') || ':' ||
     LPAD(FLOOR(MOD(MIN(res.mejor_vuelta), 100000) / 1000), 2, '0') || '.' ||
     LPAD(MOD(MIN(res.mejor_vuelta), 1000), 3, '0') AS record_vuelta,
@@ -175,7 +177,7 @@ SELECT
      JOIN Usuarios u ON j2.id = u.id
      JOIN Eventos e2 ON r2.evento = e2.id AND r2.torneo = e2.torneo
      WHERE e2.circuito = c.nombre 
-       AND r2.mejor_vuelta = MIN(res.mejor_vuelta)
+       AND r2.mejor_vuelta = (SELECT MIN(res3.mejor_vuelta) FROM Resultados res3 JOIN Eventos e3 ON res3.evento = e3.id AND res3.torneo = e3.torneo WHERE e3.circuito = c.nombre AND res3.estado_resultado = 'Finished' AND res3.mejor_vuelta > 0)
        AND r2.estado_resultado = 'Finished'
        AND ROWNUM = 1
     ) AS record_jugador,
@@ -184,17 +186,17 @@ SELECT
      FROM Resultados r2
      JOIN Eventos e2 ON r2.evento = e2.id AND r2.torneo = e2.torneo
      WHERE e2.circuito = c.nombre 
-       AND r2.mejor_vuelta = MIN(res.mejor_vuelta)
+       AND r2.mejor_vuelta = (SELECT MIN(res3.mejor_vuelta) FROM Resultados res3 JOIN Eventos e3 ON res3.evento = e3.id AND res3.torneo = e3.torneo WHERE e3.circuito = c.nombre AND res3.estado_resultado = 'Finished' AND res3.mejor_vuelta > 0)
        AND r2.estado_resultado = 'Finished'
        AND ROWNUM = 1
-    ) AS fecha_record,
-    MIN(res.mejor_vuelta) AS mejor_vuelta_numerica
+    ) AS fecha_record
 FROM Circuitos c
+JOIN CircuitosDisponibles cd ON c.nombre = cd.circuito
 LEFT JOIN Eventos e ON c.nombre = e.circuito
 LEFT JOIN Resultados res ON e.id = res.evento AND e.torneo = res.torneo
 WHERE res.estado_resultado = 'Finished'
   AND res.mejor_vuelta > 0
-GROUP BY c.nombre, c.pais, c.longitud, c.clima
+GROUP BY c.nombre, c.pais, c.longitud, cd.clima
 ORDER BY mejor_vuelta_numerica ASC;
 
 

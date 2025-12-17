@@ -93,18 +93,11 @@ CREATE OR REPLACE PACKAGE BODY pk_organizador AS
     FUNCTION consultarInscripcionesPendientes(p_torneo_id VARCHAR2) RETURN SYS_REFCURSOR IS
         v_cursor SYS_REFCURSOR;
     BEGIN
-        IF p_torneo_id IS NULL THEN
-            OPEN v_cursor FOR
-                SELECT torneo_nombre, jugador_nombre, jugador_rango, eventos_finalizados,
-                       marca, referencia, fecha_inscripcion
-                FROM v_inscripciones_pendientes;
-        ELSE
-            OPEN v_cursor FOR
-                SELECT torneo_nombre, jugador_nombre, jugador_rango, eventos_finalizados,
-                       marca, referencia, fecha_inscripcion
-                FROM v_inscripciones_pendientes
-                WHERE torneo = p_torneo_id;
-        END IF;
+        OPEN v_cursor FOR
+            SELECT torneo_nombre, jugador_nombre, jugador_rango, eventos_finalizados,
+                   marca, referencia, fecha_inscripcion
+            FROM v_inscripciones_pendientes
+            WHERE torneo = p_torneo_id;
         RETURN v_cursor;
     END consultarInscripcionesPendientes;
     

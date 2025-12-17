@@ -85,13 +85,10 @@ START Ciclo_2/Componentes/CRUDNoOK.sql
 
 -- ActoresE
 START Ciclo_1/Seguridad/ActoresE.sql
-START Ciclo_2/Seguridad/ActoresE.sql
 -- ActoresI
 START Ciclo_1/Seguridad/ActoresI.sql
-START Ciclo_2/Seguridad/ActoresI.sql
 -- Seguridad
 START Ciclo_1/Seguridad/Seguridad.sql
-START Ciclo_2/Seguridad/Seguridad.sql
 -- SeguridadOK
 START Ciclo_1/Seguridad/SeguridadOK.sql
 START Ciclo_2/Seguridad/SeguridadOK.sql
