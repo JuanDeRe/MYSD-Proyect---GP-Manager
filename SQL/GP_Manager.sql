@@ -60,10 +60,13 @@ START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/Dispar
 
 -- Indices
 START Ciclo_1/Indices_y_vistas/Indices.sql
+START Ciclo_2/Indices_y_vistas/Indices.sql
 -- Vistas
 START Ciclo_1/Indices_y_vistas/Vistas.sql
+START Ciclo_2/Indices_y_vistas/Vistas.sql
 -- IndicesVistasOK
 START Ciclo_1/Indices_y_vistas/IndicesVistasOK.sql
+START Ciclo_2/Indices_y_vistas/IndicesVistasOK.sql
 -- CRUDE
 START Ciclo_1/Componentes/CRUDE.sql
 START Ciclo_2/Componentes/CRUDE.sql
@@ -82,20 +85,26 @@ START Ciclo_2/Componentes/CRUDNoOK.sql
 
 -- ActoresE
 START Ciclo_1/Seguridad/ActoresE.sql
+START Ciclo_2/Seguridad/ActoresE.sql
 -- ActoresI
 START Ciclo_1/Seguridad/ActoresI.sql
+START Ciclo_2/Seguridad/ActoresI.sql
 -- Seguridad
 START Ciclo_1/Seguridad/Seguridad.sql
+START Ciclo_2/Seguridad/Seguridad.sql
 -- SeguridadOK
 START Ciclo_1/Seguridad/SeguridadOK.sql
+START Ciclo_2/Seguridad/SeguridadOK.sql
 -- XSeguridad
 START Ciclo_1/Seguridad/XSeguridad.sql
+START Ciclo_2/Seguridad/XSeguridad.sql
 -- XCRUD
 START Ciclo_1/Componentes/XCRUD.sql
 START Ciclo_2/Componentes/XCRUD.sql
 
 -- XIndicesVistas
 START Ciclo_1/Indices_y_vistas/XIndicesVistas.sql
+START Ciclo_2/Indices_y_vistas/XIndicesVistas.sql
 -- XDisparadores
 START Ciclo_1/Restricciones_Declarativas_Procedimentales_y_Automatizacion/XDisparadores.sql
 START Ciclo_2/Restricciones_Declarativas_Procedimentales_y_Automatizacion/XDisparadores.sql
