@@ -187,14 +187,15 @@ SELECT
        AND r2.mejor_vuelta = MIN(res.mejor_vuelta)
        AND r2.estado_resultado = 'Finished'
        AND ROWNUM = 1
-    ) AS fecha_record
+    ) AS fecha_record,
+    MIN(res.mejor_vuelta) AS mejor_vuelta_numerica
 FROM Circuitos c
 LEFT JOIN Eventos e ON c.nombre = e.circuito
 LEFT JOIN Resultados res ON e.id = res.evento AND e.torneo = res.torneo
 WHERE res.estado_resultado = 'Finished'
   AND res.mejor_vuelta > 0
 GROUP BY c.nombre, c.pais, c.longitud, c.clima
-ORDER BY MIN(res.mejor_vuelta) ASC;
+ORDER BY mejor_vuelta_numerica ASC;
 
 
 
@@ -207,10 +208,7 @@ SELECT
     v.referencia,
     v.año,
     v.categoria,
-    COUNT(i.jugador) AS total_inscripciones,
-    COUNT(CASE WHEN i.estado = 'Aceptada' THEN 1 END) AS inscripciones_aceptadas,
-    COUNT(DISTINCT i.torneo) AS torneos_diferentes,
-    COUNT(DISTINCT i.jugador) AS jugadores_diferentes
+    COUNT(i.jugador) AS total_inscripciones
 FROM Vehiculos v
 LEFT JOIN Inscripciones i ON v.marca = i.marca_vehiculo 
     AND v.referencia = i.referencia_vehiculo

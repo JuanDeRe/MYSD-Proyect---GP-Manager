@@ -1,3 +1,5 @@
+/**
+ * PACKAGE: pk_jugador
 CREATE OR REPLACE PACKAGE BODY pk_jugador AS
 
     PROCEDURE jugadorAdicionar(nombre_usuario VARCHAR2, correo VARCHAR2, pais VARCHAR2) IS

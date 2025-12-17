@@ -30,10 +30,10 @@ FROM v_top3_torneos_finalizados;
 
 -- CONSULTAS PARA MANAGER
 
--- Ver top 10 jugadores más activos
--- Usa: v_top10_jugadores_activos
-SELECT jugador, rango, eventos_finalizados, torneos_inscritos, torneos_confirmados, pais
-FROM v_top10_jugadores_activos;
+-- Ver top 5 vehiculos mas inscritos
+-- Usa: v_top5_vehiculos_inscritos
+SELECT marca, referencia, año, categoria, total_inscripciones
+FROM v_top5_vehiculos_inscritos;
 
 -- Ver inscripciones totales por mes
 -- Usa: v_inscripciones_por_mes
